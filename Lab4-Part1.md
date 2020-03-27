@@ -168,33 +168,38 @@ https://info-comp.ru/install-mysql-on-windows-10.
 			ServiceLength INTEGER
 			); */
 
+###Задание 3. Заполнение базы данных
+
++ Заполним таблицу Lecturers. Ниже приведены примеры заполнения таблицы, вам необходимо заполнить ее своими данными из первой практической работы. Для добавления записей в таблицу используется оператор INSERT. Сначала внесем в таблицу одну запись, причем воспользуемся тем, что в поле LecturerID установлена автонумерация.
+
+		mysql> INSERT INTO Lecturers
+				(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength) 	
+			      VALUES 
+				('Иванов', 'Иван', 'Иванович', "1986-05-12", 'Ассистент', 'Математика', '89123943022', 4);
+		Query OK, 1 row affected (0.01 sec)
+
+  Добавим еще одну запись, воспользуемся тем, что в поле Position установлено значение по умолчанию 'Доцент'
+  
+  		mysql> INSERT INTO Lecturers
+				(LastName, FirstName, MiddleName, BirthDate, Course, PhoneNumber, ServiceLength) 	
+			      VALUES 
+				('Петров', 'Петр', 'Петрович', "1959-04-02", 'Математика', '89189200988', 30);
+		Query OK, 1 row affected (0.01 sec)
+
+  С помощью данной команды можно одновременно вносить данные для нескольких записей.
+  
+  		mysql> INSERT INTO Lecturers
+				(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength)	
+			      VALUES 
+				('Андреев', 'Андрей', 'Андреевич', "1972-01-23", 'Профессор', 'Физика', '89327539732', 22),
+				('Васильев', 'Василий', 'Васильевич', "1983-04-01", 'Доцент', 'Физика', '89327539732', 12),
+				('Михайлов', 'Михаил', 'Михайлович', "1971-11-08", 'Профессор', 'Информатика', '89738925451', 19), 
+				('Сергеев', 'Сергей', 'Сергеевич', "1991-02-17", 'Ассистент', 'Информатика', '89832083342', 4);
+		Query OK, 4 rows affected (0.00 sec)
+		Records: 4  Duplicates: 0  Warnings: 0
 
 
-Задание 3. Заполнение базы данных
-
-/* заполним таблицу Lecturers */
-
---воспользуемся тем, что в поле LecturerID установлена автонумерация
-INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength) VALUES('Иванов', 'Иван', 'Иванович', "1986-05-12", 'Ассистент', 'Математика', '89123943022', 4);
-
---воспользуемся тем, что в поле Position установлено значение по умолчанию 'Доцент'
-
-INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Course, PhoneNumber, ServiceLength) VALUES('Петров', 'Петр', 'Петрович', "1959-04-02", 'Математика', '89189200988', 30);
-
-INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength) VALUES('Андреев', 'Андрей', 'Андреевич', "1972-01-23", 'Профессор', 'Физика', '89327539732', 22);
-
-INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength) VALUES('Васильев', 'Василий', 'Васильевич', "1983-04-01", 'Доцент', 'Физика', '89327539732', 12);
-
-INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength) VALUES('Михайлов', 'Михаил', 'Михайлович', "1971-11-08", 'Профессор', 'Информатика', '89738925451', 19);
-
-INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Position, Course, PhoneNumber, ServiceLength) VALUES('Сергеев', 'Сергей', 'Сергеевич', "1991-02-17", 'Ассистент', 'Информатика', '89832083342', 4);
-
-
-/* произведем замену данных */
-
---Заменим номер телефона у преподавателя с фамилией Сергеев
-UPDATE Lecturers SET PhoneNumber='89229923450' WHERE LastName='Сергеев';
- 
+ Аналогично вышеуказанным примерам, заполните вашу таблицу своими данными, которые вы использовали при выполнении первого практического задания. При заполнении таблицы проверьте реакцию системы на ввод неправильных данных, например попробуйте для поля Position указать значение 'Лаборант'.
 
 Задание 4. Формирование запросов с использованием оператора SELECT  
 
@@ -228,6 +233,12 @@ SELECT LastName, FirstName, MiddleName, PhoneNumber FROM Lecturers WHERE LastNam
 
 --
 SELECT Position, avg(ServiceLength) FROM Lecturers GROUP BY Position;
+
+/* произведем замену данных */
+
+--Заменим номер телефона у преподавателя с фамилией Сергеев
+UPDATE Lecturers SET PhoneNumber='89229923450' WHERE LastName='Сергеев';
+ 
 
 
 7. В результате "Отчет о работе №4" надо прикрепить
