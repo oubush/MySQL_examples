@@ -21,17 +21,17 @@ https://info-comp.ru/install-mysql-on-windows-10.
     
   Теперь вы можете создавать схемы баз данных, переключаться между ними, создавать таблицы, индексы, писать запросы и т.п.
   
-+ Введите команду *help*, чтобы просмотреть список команд MySQL. Обратите внимание, что команды имеют два варианта использования - с помощью ключевого слова и с помощью символа с предшествующей обратной косой чертой (бэкслэш). Команды в MySQL должны заканчиваться знаком ;  
++ Введите команду *help*, чтобы просмотреть список команд MySQL. Обратите внимание, что команды имеют два варианта использования - с помощью ключевого слова и с помощью символа с предшествующей обратной косой чертой (бэкслэш). Все текстовые команды в MySQL должны заканчиваться знаком ;  
   
   ![Рисунок 3](L4-P1-F3.png)  
 
 + Создайте файл, в который будут записываться все ваши команды. которые вы будете вводить в течение выполнения данного практического задания. Этот файл необходимо будет отправить на проверку в зачет первой части практического задания 4. Имя файла должно быть в формате "L4-P1-XXXФамилия.log", где XXX - номер вашей группы, после которого следует ваша фамилия латинскими буквами. Программа автоматически создаст файл с указанным именем. Для того чтобы начать запись в файл, необходимо ввести следюущую команду (укажите тот путь, по которому вы хотите сохранить этот файл).  
 
-		\T C:/Users/Oleg/Documents/GitHub/MySQL_examples/L1-P1-Bushuev.log
+		mysql> \T C:/Users/Oleg/Documents/GitHub/MySQL_examples/L1-P1-Bushuev.log
 
   Для того чтобы остановить запись в файл, используйте команду
   
-  		\t
+  		mysql> \t
   
   Вы можете снова начать запись в уже существующий файл, новые команды будут добавляться к уже существующим.
 
@@ -41,32 +41,35 @@ https://info-comp.ru/install-mysql-on-windows-10.
 
 + Посмотрите существующие базы данных с помощью следующей команды:
 
-		SHOW DATABASES;
+		mysql> SHOW DATABASES;
 		
   Теперь создайте тестовую базу данных:
   
-  		CREATE DATABASE testdb;
+  		mysql> CREATE DATABASE testdb;
 		
   Посмотрите еще раз список существующих баз данных и убедитесь, что он пополнился базой данных с именем *testdb*.  
   
   Теперь удалите тестовую базу данных:
   
-  		DROP DATABASE testdb;
+  		mysql> DROP DATABASE testdb;
 		
   Посмотрите еще раз список существующих баз данных и убедитесь, что базы данных с именем *testdb* в списке больше нет.
   Операторы CREATE и DROP используются также для создания и удаления других объектов баз данных - таблиц, пользователей и др.
 
 + Создайте новую базу данных PrepodavateliXX, где XX – номер варианта студента. Переключитесь на нее с помощью команды USE
 
-  		CREATE DATABASE PrepodavateliXX;	-- создаем базу данных "PrepodavateliXX"
-		USE PrepodavateliXX; 		 	-- выбираем базу данных "PrepodavateliXX" для работы с ней 
+  		mysql> CREATE DATABASE PrepodavateliXX;	-- создаем базу данных "PrepodavateliXX"
+		Query OK, 1 row affected (0.01 sec)
+		
+		mysql> USE PrepodavateliXX; 		 	-- выбираем базу данных "PrepodavateliXX" для работы с ней
+		Database changed
 
   Двойной дефис "--" используется в SQL для комментариев, то есть обозначения текста, который игнорируется при выполнении команд. Для комментариев, которые занимают несколько строк, используются символы /\* и \*/, которые обозначают начало и конец комментария, соответственно. 
   
 + Создайте новую таблицу Lecturers в базе данных PrepodavateliXX
 
 		/* создадим таблицу Lecturers, которая будет содержать данные преподавателей */
-		CREATE TABLE Lecturers(
+		mysql> CREATE TABLE Lecturers(
 			LecturerID INTEGER AUTO_INCREMENT UNIQUE, 
 			LastName VARCHAR(15) NOT NULL, 
 			FirstName VARCHAR(15) NOT NULL, 
@@ -76,24 +79,94 @@ https://info-comp.ru/install-mysql-on-windows-10.
 			Course VARCHAR(255) NOT NULL, 
 			PhoneNumber CHAR(11)
 			);
+		Query OK, 0 rows affected (0.04 sec)
 
-/* добавим в созданную таблицу Lecturers новое поле для стажа */
+  После ключевых слов CREATE TABLE пишется имя таблицы и в круглых скобках указываются имена столбцов создаваемой таблицы, после имени стобца указывается тип данных. Подробнее о типах данных в MySQL можно прочитать в официальной документации https://dev.mysql.com/doc/refman/8.0/en/data-types.html. Также при создании таблицы могут быть указаны некоторые особенности столбцов, например, может быть задана автоматическая нумерация для числовых типов данных (AUTO_INCREMENT), указано, что значения в данном столбце должны быть уникальными, то есть не могут повторяться (UNIQUE), или что они не могут содержать пустых ячеек (NOT NULL).
+  
+  Таблицы в базе данных можно посмотреть с помощью выражения SHOW:
+  
+  		mysql> SHOW TABLES;
+		+---------------------------+
+		| Tables_in_prepodavatelixx |
+		+---------------------------+
+		| lecturers                 |
+		+---------------------------+
+		1 row in set (0.00 sec)
+		
+  Схему таблицы можно увидеть с помощью выражения DESCRIBE:
+  
+  		mysql> DESCRIBE lecturers;
+		+-------------+--------------+------+-----+---------+----------------+
+		| Field       | Type         | Null | Key | Default | Extra          |
+		+-------------+--------------+------+-----+---------+----------------+
+		| LecturerID  | int(11)      | NO   | PRI | NULL    | auto_increment |
+		| LastName    | varchar(15)  | NO   |     | NULL    |                |
+		| FirstName   | varchar(15)  | NO   |     | NULL    |                |
+		| MiddleName  | varchar(15)  | YES  |     | NULL    |                |
+		| BirthDate   | date         | YES  |     | NULL    |                |
+		| Position    | varchar(9)   | NO   |     | NULL    |                |
+		| Course      | varchar(255) | NO   |     | NULL    |                |
+		| PhoneNumber | char(11)     | YES  |     | NULL    |                |
+		+-------------+--------------+------+-----+---------+----------------+
+		8 rows in set (0.00 sec)
+  
++ Теперь изучим, как вносить изменения в созданную таблицу. Добавьте в таблицу Lecturers новый столбец для стажа преподавателя с помощью оператора ALTER
 
-ALTER TABLE Lecturers ADD ServiceLength INTEGER;
+		mysql> ALTER TABLE Lecturers ADD ServiceLength INTEGER;
+		Query OK, 0 rows affected (0.02 sec)
+		Records: 0  Duplicates: 0  Warnings: 0
 
+  Проверим добавление столбца с помощью уже известной команды
+  
+  		mysql> DESCRIBE lecturers;
+		+---------------+--------------+------+-----+---------+----------------+
+		| Field         | Type         | Null | Key | Default | Extra          |
+		+---------------+--------------+------+-----+---------+----------------+
+		| LecturerID    | int(11)      | NO   | PRI | NULL    | auto_increment |
+		| LastName      | varchar(15)  | NO   |     | NULL    |                |
+		| FirstName     | varchar(15)  | NO   |     | NULL    |                |
+		| MiddleName    | varchar(15)  | YES  |     | NULL    |                |
+		| BirthDate     | date         | YES  |     | NULL    |                |
+		| Position      | varchar(9)   | NO   |     | NULL    |                |
+		| Course        | varchar(255) | NO   |     | NULL    |                |
+		| PhoneNumber   | char(11)     | YES  |     | NULL    |                |
+		| ServiceLength | int(11)      | YES  |     | NULL    |                |
+		+---------------+--------------+------+-----+---------+----------------+
+		9 rows in set (0.00 sec)
 
-/* добавим ограничения в таблицу Lecturers */
+  Как вы можете видеть, в список полей (столбцов) таблицы Lecturers добавился новый столбец с именем ServiceLength.  
+  
+  Добавим ограничение в таблицу Lecturers: поле Position (Должность) может принимать только три значения - 'Профессор', 'Доцент' или 'Ассистент'.
+  
+  		mysql> ALTER TABLE Lecturers ADD CONSTRAINT CHK_Pos CHECK (Position IN ('Профессор', 'Доцент', 
+		'Ассистент'));
+		Query OK, 0 rows affected (0.04 sec)
+		Records: 0  Duplicates: 0  Warnings: 0
 
-ALTER TABLE Lecturers ADD CONSTRAINT CHK_Pos CHECK (Position IN ('Профессор', 'Доцент', 'Ассистент'));
+  В данном примере для ограничения множества значений был использован предикат IN. Другим способом ограничить значения поля Position является использование логических операторов.
+  
+		/* ALTER TABLE Lecturers ADD CONSTRAINT CHK_Pos CHECK (Position='Профессор' OR Position='Доцент' 
+		OR Position='Ассистент'); */
 
--- альтернативный вариант
--- ALTER TABLE Lecturers ADD CONSTRAINT CHK_Pos CHECK (Position='Профессор' OR Position='Доцент' OR Position='Ассистент'); 
-
-ALTER TABLE Lecturers ALTER Position SET DEFAULT 'Доцент';
-
-/* данные ограничения можно было задать при создании таблицы Lecturers */
-
-CREATE TABLE Lecturers (LecturerID INTEGER AUTO_INCREMENT UNIQUE, LastName VARCHAR(15) NOT NULL, FirstName VARCHAR(15) NOT NULL, MiddleName VARCHAR(15),  BirthDate DATE, Position VARCHAR(9) NOT NULL DEFAULT 'Доцент', CHECK (Position IN ('Профессор', 'Доцент', 'Ассистент')), Course VARCHAR(255) NOT NULL, PhoneNumber CHAR(11), ServiceLength INTEGER);
+  Добавим значение по умолчанию для поля Position
+  
+  		mysql> ALTER TABLE Lecturers ALTER Position SET DEFAULT 'Доцент';
+		Query OK, 0 rows affected (0.01 sec)
+		Records: 0  Duplicates: 0  Warnings: 0
+		
+  Данные ограничения можно было задать при создании таблицы Lecturers 
+  
+		/* CREATE TABLE Lecturers(
+			LecturerID INTEGER AUTO_INCREMENT UNIQUE, 
+			LastName VARCHAR(15) NOT NULL, 
+			FirstName VARCHAR(15) NOT NULL, 
+			MiddleName VARCHAR(15),  
+			BirthDate DATE, 
+			Position VARCHAR(9) NOT NULL DEFAULT 'Доцент', CHECK (Position IN ('Профессор', 'Доцент', 'Ассистент')), 
+			Course VARCHAR(255) NOT NULL, 
+			PhoneNumber CHAR(11), 
+			ServiceLength INTEGER
+			); */
 
 
 
