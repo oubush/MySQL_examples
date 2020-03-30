@@ -273,6 +273,7 @@
 		GROUP BY M.StudentID 
 		HAVING SUM(M.Mark) = 20;
 
+  <a name="FIXME"></a>
   *FIXME*
   *Выражение HAVING*
 
