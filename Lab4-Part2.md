@@ -170,11 +170,118 @@
 
 ### Задание 2. Составление запросов
 
-+ Создайте запросы на информацию о студентах с заданным условием. Получите информацию о студентах определенной группы с помощью запроса
++ Создайте запросы на информацию о студентах с заданным условием из одной таблицы. Получите информацию о студентах определенной группы с помощью запроса
 
 		SELECT * FROM Students WHERE GroupNumber = номер_группы;
 
-  Самостоятельно составьте запросы на выбор информации о студентах, которые получают стипендию.
+  Самостоятельно составьте следюущие запросы:
+  	+ вся информация о студентах, получающих стипендию;
+	+ фамилия, имя, отчество, дата рождения, стаж профессоров.
+	  
++ Теперь вам предстоит создавать запросы, которые используют информацию из нескольких таблиц. Для этого вам потребуется использовать выражение JOIN. Для примера получим информацию о дисциплинах, которые преподают доценты. Названия дисциплин хранятся в таблице Courses, а должности преподавателей - в таблице Lecturers. Обе таблицы содержат поле CourseID (КодДисциплины), по которому можно провести их соединение:
+
+		SELECT Lecturers.LastName, Lecturers.FirstName, Lecturers.Position, Courses.CourseName
+		FROM Lecturers JOIN Courses ON Lecturers.CourseID = Courses.CourseID
+		WHERE Lecturers.Position = 'Доцент';
+
+  Выражение имя_таблицы.имя_столбца позволяет избежать двусмысленности, если разные таблицы содержат столбцы с одинаковыми именами. Для того чтобы избежать частого написания длинных названий используются подстановочные имена (алиасы), которые можно задать при помощи выражения AS:
+    
+		SELECT L.LastName, L.FirstName, L.Position, C.CourseName
+		FROM Lecturers AS L JOIN Courses AS C ON L.CourseID = C.CourseID
+		WHERE L.Position = 'Доцент';
+
+  Выражение AS можно опустить и написать такой запрос, аналогичный двум предыдущим:
+  
+		SELECT L.LastName, L.FirstName, L.Position, C.CourseName
+		FROM Lecturers L JOIN Courses C ON L.CourseID = C.CourseID
+		WHERE L.Position = 'Доцент';
+  		
+  Теперь получим информацию об оценках студентов заданной группы по заданной дисциплине. Для этого нам понадобиться соединение трех таблиц - Students, Marks и Courses.
+
+		SELECT LastName, FirstName, MiddleName, GroupNumber, CourseName, Mark 
+		FROM Students 
+		INNER JOIN Marks ON Students.StudentID = Marks.StudentID 
+		INNER JOIN Courses ON Courses.CourseID = Marks.CourseID 
+		WHERE GroupNumber = номер_группы AND CourseName = название_дисциплины;
+		
+  Самостоятельно составьте запрос на получение оценок по всем дисцилинам для конкретного студента (указывается его фамилия).
+
++ Составьте запросы, использующие функции агрегирования. 
+
+*FIXME*
+*Подробнее про функции агрегирования - их список привести*. 
+*Простые примеры*
+*Выражение GROUP BY*
+
+  Запрос, в результате которого создастся выборка, отражающая средний балл по дисциплинам по всем студентам в группах:
+
+		SELECT C.CourseName, AVG(M.Mark)
+		FROM Marks M 
+		JOIN Students S ON M.StudentID = S.StudentID 
+		JOIN Courses C ON M.CourseID = C.CourseID 
+		GROUP BY C.CourseName;
+		
+  Запрос, в результате которого создастся выборка, отражающая средний балл по дисциплинам в определенной группе:
+
+		SELECT C.CourseName, AVG(M.Mark) 
+		FROM Marks M 
+		JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = номер_группы) 
+		JOIN Courses C ON M.CourseID = C.CourseID 
+		GROUP BY C.CourseName; 
+  
+  *FIXME*
+  *Использование подзапросов*
+  Запрос, в результате которого создастся выборка, отражающая средний балл по дисциплинам по всем студентам и по каждой группе
+
+		SELECT T.CourseName, AVG_total, AVG_1, AVG_2 
+		FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_total 
+			FROM Marks M 
+			JOIN Students S ON M.StudentID = S.StudentID 
+			JOIN Courses C ON M.CourseID = C.CourseID 
+			GROUP BY C.CourseName) AS T 
+		JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_1 
+			FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = номер_1-й_группы) 
+			JOIN Courses C ON M.CourseID = C.CourseID 
+			GROUP BY C.CourseName) AS G1 
+		ON T.CourseName = G1.CourseName
+		JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_2 
+			FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = номер_2-й_группы) 
+			JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 
+		ON G1.CourseName = G2.CourseName;
+
++ Увеличьте стаж работы преподавателей на M лет, при условии, что он составляет меньше N лет, используя оператор UPDATE. Вместо M и N вставьте свои числа.
+
+		UPDATE Lecturers SET ServiceLength = ServiceLength + M WHERE ServiceLength < N;
+		
+  Самостоятельно составьте команду, которая увеличит стаж работы доцентов на некоторую величину. 
+
++ Удалите студентов из таблицы Students. Так как удаление является чувствительной операцией, мы должны быть уверены, что удаляем именно того студента, которого должны, поэтому в условии должны быть указаны его полное ФИО и номер группы.
+
+		DELETE FROM Students 
+		WHERE Lastname = 'Фамилия_студента' AND Firstname = 'Имя_студента' AND Middlename = 'Отчество_студента' AND GroupNumber = номер_группы;
+
+  Проверьте, что студент удален (таблица Students), а также, что его оценки также удалены из-за каскадного удаления (таблица Marks). Используйте для этой цели оператор SELECT.
+
++ Создайте новую таблицу, в которой будет информация об отличниках. Сначала сформируйте запрос на выборку отличников:
+
+		SELECT S.LastName, S.FirstName, S.MiddleName, S.GroupNumber
+		FROM Students S
+		JOIN Marks M ON M.StudentID = S.StudentID
+		GROUP BY M.StudentID 
+		HAVING SUM(M.Mark) = 20;
+
+  *FIXME*
+  *Выражение HAVING*
+
+  Теперь создайте новую таблицу на основе этого запроса:
+
+		CREATE TABLE Top_Students AS
+			SELECT S.LastName, S.FirstName, S.MiddleName, S.GroupNumber
+			FROM Students S
+			JOIN Marks M ON M.StudentID = S.StudentID
+			GROUP BY M.StudentID 
+			HAVING SUM(M.Mark) = 20;
 
 + Завершите запись команд в файл и отправьте ваш файл "L4-P2-XXXФамилия.log" на проверку (в элементе курса "Сдать на проверку Практическое задание 4").
 
+*FIXME* Бонус: *MySQL Workbench - познакомиться с ним во второй работе*
