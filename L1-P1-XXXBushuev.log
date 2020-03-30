@@ -1,0 +1,2436 @@
+mysql> CREATE SCHEMA DEKANATXX;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE DEKANATXX;
+Database changed
+mysql> CREATE TABLE Students (StudentID INTEGER PRIMARY KEY NOT NULL, LastName VARCHAR(15) NOT NULL, FirstName VARCHAR(15) NOT NULL, MiddleName VARCHAR(15),  GroupNumber INTEGER NOT NULL, PhoneNumber CHAR(10), Stipend INT(1) DEFAULT 0);
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> DESCRIBE Students;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| StudentID   | int(11)     | NO   | PRI | NULL    |       |
+| LastName    | varchar(15) | NO   |     | NULL    |       |
+| FirstName   | varchar(15) | NO   |     | NULL    |       |
+| MiddleName  | varchar(15) | YES  |     | NULL    |       |
+| GroupNumber | int(11)     | NO   |     | NULL    |       |
+| PhoneNumber | char(10)    | YES  |     | NULL    |       |
+| Stipend     | int(1)      | YES  |     | 0       |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Courses (CourseID INTEGER PRIMARY KEY NOT NULL, CourseName VARCHAR(255) NOT NULL);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DESC COURSES;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| CourseID   | int(11)      | NO   | PRI | NULL    |       |
+| CourseName | varchar(255) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Lecturers(
+    -> LecturerID INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL, 
+    -> LastName VARCHAR(15) NOT NULL, 
+    -> FirstName VARCHAR(15) NOT NULL, 
+    -> MiddleName VARCHAR(15),  
+    -> BirthDate DATE, 
+    -> Position VARCHAR(9) NOT NULL, 
+    -> CourseID INTEGER NOT NULL, 
+    -> PhoneNumber CHAR(10)
+    -> clear
+    -> clear;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'clear
+clear' at line 10
+mysql> CREATE TABLE Lecturers(LecturerID INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL, LastName VARCHAR(15) NOT NULL, FirstName VARCHAR(15) NOT NULL, MiddleName VARCHAR(15), BirthDate DATE, Position VARCHAR(9) NOT NULL, Course VARCHAR(15) NOT NULL, PhoneNumber CHAR(10));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DESC Lecturers;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| LecturerID  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName    | varchar(15) | NO   |     | NULL    |                |
+| FirstName   | varchar(15) | NO   |     | NULL    |                |
+| MiddleName  | varchar(15) | YES  |     | NULL    |                |
+| BirthDate   | date        | YES  |     | NULL    |                |
+| Position    | varchar(9)  | NO   |     | NULL    |                |
+| Course      | varchar(15) | NO   |     | NULL    |                |
+| PhoneNumber | char(10)    | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Lecturers DROP Course;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC Lecturers;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| LecturerID  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName    | varchar(15) | NO   |     | NULL    |                |
+| FirstName   | varchar(15) | NO   |     | NULL    |                |
+| MiddleName  | varchar(15) | YES  |     | NULL    |                |
+| BirthDate   | date        | YES  |     | NULL    |                |
+| Position    | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber | char(10)    | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Lecturers ADD CourseID INTEGER NOT NULL;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC Lecturers;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| LecturerID  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName    | varchar(15) | NO   |     | NULL    |                |
+| FirstName   | varchar(15) | NO   |     | NULL    |                |
+| MiddleName  | varchar(15) | YES  |     | NULL    |                |
+| BirthDate   | date        | YES  |     | NULL    |                |
+| Position    | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber | char(10)    | YES  |     | NULL    |                |
+| CourseID    | int(11)     | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Marks (StudentID INTEGER NOT NULL, CourseID INTEGER NOT NULL, Mark INT(1), PRIMARY KEY(StudentID, CourseID));
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> DESC Markss;
+ERROR 1146 (42S02): Table 'dekanatxx.markss' doesn't exist
+mysql> DESC Marks;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| StudentID | int(11) | NO   | PRI | NULL    |       |
+| CourseID  | int(11) | NO   | PRI | NULL    |       |
+| Mark      | int(1)  | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Marks ADD CONSTRAINT CHK_Mark CHECK (Mark BETWEEN 1 AND 5);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC Marks;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| StudentID | int(11) | NO   | PRI | NULL    |       |
+| CourseID  | int(11) | NO   | PRI | NULL    |       |
+| Mark      | int(1)  | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Marks 
+    ->   ADD CONSTRAINT FK_Mark_Course 
+    ->   FOREIGN KEY(CourseId) REFERENCE Courses(CourseId);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'REFERENCE Courses(CourseId)' at line 3
+mysql> ALTER TABLE Marks ADD CONSTRAINT FK_Mark_Course FOREIGN KEY(CourseId) REFERENCE Courses(CourseId);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'REFERENCE Courses(CourseId)' at line 1
+mysql> ALTER TABLE Marks 
+    ->   ADD CONSTRAINT FK_Mark_Course 
+    ->   FOREIGN KEY(CourseId) REFERENCES Courses(CourseId);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Marks 
+    ->   ADD CONSTRAINT FK_Mark_Student 
+    ->   FOREIGN KEY(StudentId) REFERENCES Students(StudentId);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Lecturers
+    ->   ADD CONSTRAINT FK_Lecturer_Course 
+    ->   FOREIGN KEY(CourseId) REFERENCES Courses(CourseId);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME
+    ->        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE;
++--------------------+------------------------------------------------------+-----------------------+---------------------------+
+| TABLE_SCHEMA       | TABLE_NAME                                           | COLUMN_NAME           | CONSTRAINT_NAME           |
++--------------------+------------------------------------------------------+-----------------------+---------------------------+
+| mysql              | innodb_table_stats                                   | database_name         | PRIMARY                   |
+| mysql              | innodb_table_stats                                   | table_name            | PRIMARY                   |
+| mysql              | innodb_index_stats                                   | database_name         | PRIMARY                   |
+| mysql              | innodb_index_stats                                   | table_name            | PRIMARY                   |
+| mysql              | innodb_index_stats                                   | index_name            | PRIMARY                   |
+| mysql              | innodb_index_stats                                   | stat_name             | PRIMARY                   |
+| performance_schema | cond_instances                                       | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | events_waits_current                                 | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_waits_current                                 | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_waits_history                                 | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_waits_history                                 | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_waits_summary_by_host_by_event_name           | HOST                  | HOST                      |
+| performance_schema | events_waits_summary_by_host_by_event_name           | EVENT_NAME            | HOST                      |
+| performance_schema | events_waits_summary_by_instance                     | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | events_waits_summary_by_thread_by_event_name         | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_waits_summary_by_thread_by_event_name         | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_waits_summary_by_user_by_event_name           | USER                  | USER                      |
+| performance_schema | events_waits_summary_by_user_by_event_name           | EVENT_NAME            | USER                      |
+| performance_schema | events_waits_summary_by_account_by_event_name        | USER                  | ACCOUNT                   |
+| performance_schema | events_waits_summary_by_account_by_event_name        | HOST                  | ACCOUNT                   |
+| performance_schema | events_waits_summary_by_account_by_event_name        | EVENT_NAME            | ACCOUNT                   |
+| performance_schema | events_waits_summary_global_by_event_name            | EVENT_NAME            | PRIMARY                   |
+| performance_schema | file_instances                                       | FILE_NAME             | PRIMARY                   |
+| performance_schema | file_summary_by_event_name                           | EVENT_NAME            | PRIMARY                   |
+| performance_schema | file_summary_by_instance                             | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | host_cache                                           | IP                    | PRIMARY                   |
+| performance_schema | mutex_instances                                      | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | objects_summary_global_by_type                       | OBJECT_TYPE           | OBJECT                    |
+| performance_schema | objects_summary_global_by_type                       | OBJECT_SCHEMA         | OBJECT                    |
+| performance_schema | objects_summary_global_by_type                       | OBJECT_NAME           | OBJECT                    |
+| performance_schema | rwlock_instances                                     | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | setup_actors                                         | HOST                  | PRIMARY                   |
+| performance_schema | setup_actors                                         | USER                  | PRIMARY                   |
+| performance_schema | setup_actors                                         | ROLE                  | PRIMARY                   |
+| performance_schema | setup_consumers                                      | NAME                  | PRIMARY                   |
+| performance_schema | setup_instruments                                    | NAME                  | PRIMARY                   |
+| performance_schema | setup_objects                                        | OBJECT_TYPE           | OBJECT                    |
+| performance_schema | setup_objects                                        | OBJECT_SCHEMA         | OBJECT                    |
+| performance_schema | setup_objects                                        | OBJECT_NAME           | OBJECT                    |
+| performance_schema | setup_threads                                        | NAME                  | PRIMARY                   |
+| performance_schema | table_io_waits_summary_by_index_usage                | OBJECT_TYPE           | OBJECT                    |
+| performance_schema | table_io_waits_summary_by_index_usage                | OBJECT_SCHEMA         | OBJECT                    |
+| performance_schema | table_io_waits_summary_by_index_usage                | OBJECT_NAME           | OBJECT                    |
+| performance_schema | table_io_waits_summary_by_index_usage                | INDEX_NAME            | OBJECT                    |
+| performance_schema | table_io_waits_summary_by_table                      | OBJECT_TYPE           | OBJECT                    |
+| performance_schema | table_io_waits_summary_by_table                      | OBJECT_SCHEMA         | OBJECT                    |
+| performance_schema | table_io_waits_summary_by_table                      | OBJECT_NAME           | OBJECT                    |
+| performance_schema | table_lock_waits_summary_by_table                    | OBJECT_TYPE           | OBJECT                    |
+| performance_schema | table_lock_waits_summary_by_table                    | OBJECT_SCHEMA         | OBJECT                    |
+| performance_schema | table_lock_waits_summary_by_table                    | OBJECT_NAME           | OBJECT                    |
+| performance_schema | threads                                              | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_stages_current                                | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_stages_current                                | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_stages_history                                | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_stages_history                                | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_stages_summary_by_thread_by_event_name        | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_stages_summary_by_thread_by_event_name        | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_stages_summary_by_account_by_event_name       | USER                  | ACCOUNT                   |
+| performance_schema | events_stages_summary_by_account_by_event_name       | HOST                  | ACCOUNT                   |
+| performance_schema | events_stages_summary_by_account_by_event_name       | EVENT_NAME            | ACCOUNT                   |
+| performance_schema | events_stages_summary_by_user_by_event_name          | USER                  | USER                      |
+| performance_schema | events_stages_summary_by_user_by_event_name          | EVENT_NAME            | USER                      |
+| performance_schema | events_stages_summary_by_host_by_event_name          | HOST                  | HOST                      |
+| performance_schema | events_stages_summary_by_host_by_event_name          | EVENT_NAME            | HOST                      |
+| performance_schema | events_stages_summary_global_by_event_name           | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_statements_current                            | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_statements_current                            | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_statements_history                            | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_statements_history                            | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_statements_summary_by_thread_by_event_name    | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_statements_summary_by_thread_by_event_name    | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_statements_summary_by_account_by_event_name   | USER                  | ACCOUNT                   |
+| performance_schema | events_statements_summary_by_account_by_event_name   | HOST                  | ACCOUNT                   |
+| performance_schema | events_statements_summary_by_account_by_event_name   | EVENT_NAME            | ACCOUNT                   |
+| performance_schema | events_statements_summary_by_user_by_event_name      | USER                  | USER                      |
+| performance_schema | events_statements_summary_by_user_by_event_name      | EVENT_NAME            | USER                      |
+| performance_schema | events_statements_summary_by_host_by_event_name      | HOST                  | HOST                      |
+| performance_schema | events_statements_summary_by_host_by_event_name      | EVENT_NAME            | HOST                      |
+| performance_schema | events_statements_summary_global_by_event_name       | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_statements_summary_by_digest                  | SCHEMA_NAME           | SCHEMA_NAME               |
+| performance_schema | events_statements_summary_by_digest                  | DIGEST                | SCHEMA_NAME               |
+| performance_schema | events_statements_summary_by_program                 | OBJECT_TYPE           | PRIMARY                   |
+| performance_schema | events_statements_summary_by_program                 | OBJECT_SCHEMA         | PRIMARY                   |
+| performance_schema | events_statements_summary_by_program                 | OBJECT_NAME           | PRIMARY                   |
+| performance_schema | events_statements_histogram_global                   | BUCKET_NUMBER         | PRIMARY                   |
+| performance_schema | events_statements_histogram_by_digest                | SCHEMA_NAME           | SCHEMA_NAME               |
+| performance_schema | events_statements_histogram_by_digest                | DIGEST                | SCHEMA_NAME               |
+| performance_schema | events_statements_histogram_by_digest                | BUCKET_NUMBER         | SCHEMA_NAME               |
+| performance_schema | events_transactions_current                          | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_transactions_current                          | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_transactions_history                          | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_transactions_history                          | EVENT_ID              | PRIMARY                   |
+| performance_schema | events_transactions_summary_by_thread_by_event_name  | THREAD_ID             | PRIMARY                   |
+| performance_schema | events_transactions_summary_by_thread_by_event_name  | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_transactions_summary_by_account_by_event_name | USER                  | ACCOUNT                   |
+| performance_schema | events_transactions_summary_by_account_by_event_name | HOST                  | ACCOUNT                   |
+| performance_schema | events_transactions_summary_by_account_by_event_name | EVENT_NAME            | ACCOUNT                   |
+| performance_schema | events_transactions_summary_by_user_by_event_name    | USER                  | USER                      |
+| performance_schema | events_transactions_summary_by_user_by_event_name    | EVENT_NAME            | USER                      |
+| performance_schema | events_transactions_summary_by_host_by_event_name    | HOST                  | HOST                      |
+| performance_schema | events_transactions_summary_by_host_by_event_name    | EVENT_NAME            | HOST                      |
+| performance_schema | events_transactions_summary_global_by_event_name     | EVENT_NAME            | PRIMARY                   |
+| performance_schema | events_errors_summary_by_user_by_error               | USER                  | USER                      |
+| performance_schema | events_errors_summary_by_user_by_error               | ERROR_NUMBER          | USER                      |
+| performance_schema | events_errors_summary_by_host_by_error               | HOST                  | HOST                      |
+| performance_schema | events_errors_summary_by_host_by_error               | ERROR_NUMBER          | HOST                      |
+| performance_schema | events_errors_summary_by_account_by_error            | USER                  | ACCOUNT                   |
+| performance_schema | events_errors_summary_by_account_by_error            | HOST                  | ACCOUNT                   |
+| performance_schema | events_errors_summary_by_account_by_error            | ERROR_NUMBER          | ACCOUNT                   |
+| performance_schema | events_errors_summary_by_thread_by_error             | THREAD_ID             | THREAD_ID                 |
+| performance_schema | events_errors_summary_by_thread_by_error             | ERROR_NUMBER          | THREAD_ID                 |
+| performance_schema | events_errors_summary_global_by_error                | ERROR_NUMBER          | ERROR_NUMBER              |
+| performance_schema | users                                                | USER                  | USER                      |
+| performance_schema | accounts                                             | USER                  | ACCOUNT                   |
+| performance_schema | accounts                                             | HOST                  | ACCOUNT                   |
+| performance_schema | hosts                                                | HOST                  | HOST                      |
+| performance_schema | socket_instances                                     | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | socket_summary_by_instance                           | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | socket_summary_by_event_name                         | EVENT_NAME            | PRIMARY                   |
+| performance_schema | session_connect_attrs                                | PROCESSLIST_ID        | PRIMARY                   |
+| performance_schema | session_connect_attrs                                | ATTR_NAME             | PRIMARY                   |
+| performance_schema | session_account_connect_attrs                        | PROCESSLIST_ID        | PRIMARY                   |
+| performance_schema | session_account_connect_attrs                        | ATTR_NAME             | PRIMARY                   |
+| performance_schema | memory_summary_global_by_event_name                  | EVENT_NAME            | PRIMARY                   |
+| performance_schema | memory_summary_by_account_by_event_name              | USER                  | ACCOUNT                   |
+| performance_schema | memory_summary_by_account_by_event_name              | HOST                  | ACCOUNT                   |
+| performance_schema | memory_summary_by_account_by_event_name              | EVENT_NAME            | ACCOUNT                   |
+| performance_schema | memory_summary_by_host_by_event_name                 | HOST                  | HOST                      |
+| performance_schema | memory_summary_by_host_by_event_name                 | EVENT_NAME            | HOST                      |
+| performance_schema | memory_summary_by_thread_by_event_name               | THREAD_ID             | PRIMARY                   |
+| performance_schema | memory_summary_by_thread_by_event_name               | EVENT_NAME            | PRIMARY                   |
+| performance_schema | memory_summary_by_user_by_event_name                 | USER                  | USER                      |
+| performance_schema | memory_summary_by_user_by_event_name                 | EVENT_NAME            | USER                      |
+| performance_schema | table_handles                                        | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | metadata_locks                                       | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | data_locks                                           | ENGINE_LOCK_ID        | PRIMARY                   |
+| performance_schema | data_locks                                           | ENGINE                | PRIMARY                   |
+| performance_schema | replication_connection_configuration                 | CHANNEL_NAME          | PRIMARY                   |
+| performance_schema | replication_connection_status                        | CHANNEL_NAME          | PRIMARY                   |
+| performance_schema | replication_applier_configuration                    | CHANNEL_NAME          | PRIMARY                   |
+| performance_schema | replication_applier_status                           | CHANNEL_NAME          | PRIMARY                   |
+| performance_schema | replication_applier_status_by_coordinator            | CHANNEL_NAME          | PRIMARY                   |
+| performance_schema | replication_applier_status_by_worker                 | CHANNEL_NAME          | PRIMARY                   |
+| performance_schema | replication_applier_status_by_worker                 | WORKER_ID             | PRIMARY                   |
+| performance_schema | prepared_statements_instances                        | OBJECT_INSTANCE_BEGIN | PRIMARY                   |
+| performance_schema | prepared_statements_instances                        | OWNER_THREAD_ID       | OWNER_THREAD_ID           |
+| performance_schema | prepared_statements_instances                        | OWNER_EVENT_ID        | OWNER_THREAD_ID           |
+| performance_schema | user_variables_by_thread                             | THREAD_ID             | PRIMARY                   |
+| performance_schema | user_variables_by_thread                             | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | status_by_account                                    | USER                  | ACCOUNT                   |
+| performance_schema | status_by_account                                    | HOST                  | ACCOUNT                   |
+| performance_schema | status_by_account                                    | VARIABLE_NAME         | ACCOUNT                   |
+| performance_schema | status_by_host                                       | HOST                  | HOST                      |
+| performance_schema | status_by_host                                       | VARIABLE_NAME         | HOST                      |
+| performance_schema | status_by_thread                                     | THREAD_ID             | PRIMARY                   |
+| performance_schema | status_by_thread                                     | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | status_by_user                                       | USER                  | USER                      |
+| performance_schema | status_by_user                                       | VARIABLE_NAME         | USER                      |
+| performance_schema | global_status                                        | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | session_status                                       | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | variables_by_thread                                  | THREAD_ID             | PRIMARY                   |
+| performance_schema | variables_by_thread                                  | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | global_variables                                     | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | session_variables                                    | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | persisted_variables                                  | VARIABLE_NAME         | PRIMARY                   |
+| performance_schema | user_defined_functions                               | UDF_NAME              | PRIMARY                   |
+| mysql              | db                                                   | Host                  | PRIMARY                   |
+| mysql              | db                                                   | Db                    | PRIMARY                   |
+| mysql              | db                                                   | User                  | PRIMARY                   |
+| mysql              | user                                                 | Host                  | PRIMARY                   |
+| mysql              | user                                                 | User                  | PRIMARY                   |
+| mysql              | default_roles                                        | HOST                  | PRIMARY                   |
+| mysql              | default_roles                                        | USER                  | PRIMARY                   |
+| mysql              | default_roles                                        | DEFAULT_ROLE_HOST     | PRIMARY                   |
+| mysql              | default_roles                                        | DEFAULT_ROLE_USER     | PRIMARY                   |
+| mysql              | role_edges                                           | FROM_HOST             | PRIMARY                   |
+| mysql              | role_edges                                           | FROM_USER             | PRIMARY                   |
+| mysql              | role_edges                                           | TO_HOST               | PRIMARY                   |
+| mysql              | role_edges                                           | TO_USER               | PRIMARY                   |
+| mysql              | global_grants                                        | USER                  | PRIMARY                   |
+| mysql              | global_grants                                        | HOST                  | PRIMARY                   |
+| mysql              | global_grants                                        | PRIV                  | PRIMARY                   |
+| mysql              | password_history                                     | Host                  | PRIMARY                   |
+| mysql              | password_history                                     | User                  | PRIMARY                   |
+| mysql              | password_history                                     | Password_timestamp    | PRIMARY                   |
+| mysql              | func                                                 | name                  | PRIMARY                   |
+| mysql              | plugin                                               | name                  | PRIMARY                   |
+| mysql              | help_topic                                           | help_topic_id         | PRIMARY                   |
+| mysql              | help_topic                                           | name                  | name                      |
+| mysql              | help_category                                        | help_category_id      | PRIMARY                   |
+| mysql              | help_category                                        | name                  | name                      |
+| mysql              | help_relation                                        | help_keyword_id       | PRIMARY                   |
+| mysql              | help_relation                                        | help_topic_id         | PRIMARY                   |
+| mysql              | servers                                              | Server_name           | PRIMARY                   |
+| mysql              | tables_priv                                          | Host                  | PRIMARY                   |
+| mysql              | tables_priv                                          | Db                    | PRIMARY                   |
+| mysql              | tables_priv                                          | User                  | PRIMARY                   |
+| mysql              | tables_priv                                          | Table_name            | PRIMARY                   |
+| mysql              | columns_priv                                         | Host                  | PRIMARY                   |
+| mysql              | columns_priv                                         | Db                    | PRIMARY                   |
+| mysql              | columns_priv                                         | User                  | PRIMARY                   |
+| mysql              | columns_priv                                         | Table_name            | PRIMARY                   |
+| mysql              | columns_priv                                         | Column_name           | PRIMARY                   |
+| mysql              | help_keyword                                         | help_keyword_id       | PRIMARY                   |
+| mysql              | help_keyword                                         | name                  | name                      |
+| mysql              | time_zone_name                                       | Name                  | PRIMARY                   |
+| mysql              | time_zone                                            | Time_zone_id          | PRIMARY                   |
+| mysql              | time_zone_transition                                 | Time_zone_id          | PRIMARY                   |
+| mysql              | time_zone_transition                                 | Transition_time       | PRIMARY                   |
+| mysql              | time_zone_transition_type                            | Time_zone_id          | PRIMARY                   |
+| mysql              | time_zone_transition_type                            | Transition_type_id    | PRIMARY                   |
+| mysql              | time_zone_leap_second                                | Transition_time       | PRIMARY                   |
+| mysql              | procs_priv                                           | Host                  | PRIMARY                   |
+| mysql              | procs_priv                                           | Db                    | PRIMARY                   |
+| mysql              | procs_priv                                           | User                  | PRIMARY                   |
+| mysql              | procs_priv                                           | Routine_name          | PRIMARY                   |
+| mysql              | procs_priv                                           | Routine_type          | PRIMARY                   |
+| mysql              | component                                            | component_id          | PRIMARY                   |
+| mysql              | slave_relay_log_info                                 | Channel_name          | PRIMARY                   |
+| mysql              | slave_master_info                                    | Channel_name          | PRIMARY                   |
+| mysql              | slave_worker_info                                    | Channel_name          | PRIMARY                   |
+| mysql              | slave_worker_info                                    | Id                    | PRIMARY                   |
+| mysql              | gtid_executed                                        | source_uuid           | PRIMARY                   |
+| mysql              | gtid_executed                                        | interval_start        | PRIMARY                   |
+| mysql              | server_cost                                          | cost_name             | PRIMARY                   |
+| mysql              | engine_cost                                          | cost_name             | PRIMARY                   |
+| mysql              | engine_cost                                          | engine_name           | PRIMARY                   |
+| mysql              | engine_cost                                          | device_type           | PRIMARY                   |
+| mysql              | proxies_priv                                         | Host                  | PRIMARY                   |
+| mysql              | proxies_priv                                         | User                  | PRIMARY                   |
+| mysql              | proxies_priv                                         | Proxied_host          | PRIMARY                   |
+| mysql              | proxies_priv                                         | Proxied_user          | PRIMARY                   |
+| sys                | sys_config                                           | variable              | PRIMARY                   |
+| sakila             | actor                                                | actor_id              | PRIMARY                   |
+| sakila             | address                                              | address_id            | PRIMARY                   |
+| sakila             | category                                             | category_id           | PRIMARY                   |
+| sakila             | city                                                 | city_id               | PRIMARY                   |
+| sakila             | country                                              | country_id            | PRIMARY                   |
+| sakila             | customer                                             | customer_id           | PRIMARY                   |
+| sakila             | film                                                 | film_id               | PRIMARY                   |
+| sakila             | film_actor                                           | actor_id              | PRIMARY                   |
+| sakila             | film_actor                                           | film_id               | PRIMARY                   |
+| sakila             | film_category                                        | film_id               | PRIMARY                   |
+| sakila             | film_category                                        | category_id           | PRIMARY                   |
+| sakila             | film_text                                            | film_id               | PRIMARY                   |
+| sakila             | inventory                                            | inventory_id          | PRIMARY                   |
+| sakila             | language                                             | language_id           | PRIMARY                   |
+| sakila             | payment                                              | payment_id            | PRIMARY                   |
+| sakila             | rental                                               | rental_id             | PRIMARY                   |
+| sakila             | rental                                               | rental_date           | rental_date               |
+| sakila             | rental                                               | inventory_id          | rental_date               |
+| sakila             | rental                                               | customer_id           | rental_date               |
+| sakila             | staff                                                | staff_id              | PRIMARY                   |
+| sakila             | store                                                | store_id              | PRIMARY                   |
+| sakila             | store                                                | manager_staff_id      | idx_unique_manager        |
+| world              | city                                                 | ID                    | PRIMARY                   |
+| world              | country                                              | Code                  | PRIMARY                   |
+| world              | countrylanguage                                      | CountryCode           | PRIMARY                   |
+| world              | countrylanguage                                      | Language              | PRIMARY                   |
+| student_info       | teacher                                              | TeacherId             | PRIMARY                   |
+| student_info       | course                                               | CourseId              | PRIMARY                   |
+| student_info       | course                                               | CourseTitle           | CourseTitle               |
+| student_info       | st_group                                             | GroupNumber           | PRIMARY                   |
+| student_info       | student                                              | StudentId             | PRIMARY                   |
+| student_info       | exam_sheet                                           | ExamSheetId           | PRIMARY                   |
+| student_info       | exam_result                                          | StudentId             | PRIMARY                   |
+| student_info       | exam_result                                          | ExamSheetId           | PRIMARY                   |
+| prepodavatelixx    | lecturers                                            | LecturerID            | LecturerID                |
+| dekanatxx          | students                                             | StudentID             | PRIMARY                   |
+| dekanatxx          | courses                                              | CourseID              | PRIMARY                   |
+| dekanatxx          | marks                                                | StudentID             | PRIMARY                   |
+| dekanatxx          | marks                                                | CourseID              | PRIMARY                   |
+| dekanatxx          | lecturers                                            | LecturerID            | PRIMARY                   |
+| dekanatxx          | lecturers                                            | LecturerID            | LecturerID                |
+| sakila             | address                                              | city_id               | fk_address_city           |
+| sakila             | city                                                 | country_id            | fk_city_country           |
+| sakila             | customer                                             | address_id            | fk_customer_address       |
+| sakila             | customer                                             | store_id              | fk_customer_store         |
+| sakila             | film                                                 | language_id           | fk_film_language          |
+| sakila             | film                                                 | original_language_id  | fk_film_language_original |
+| sakila             | film_actor                                           | actor_id              | fk_film_actor_actor       |
+| sakila             | film_actor                                           | film_id               | fk_film_actor_film        |
+| sakila             | film_category                                        | film_id               | fk_film_category_film     |
+| sakila             | film_category                                        | category_id           | fk_film_category_category |
+| sakila             | inventory                                            | store_id              | fk_inventory_store        |
+| sakila             | inventory                                            | film_id               | fk_inventory_film         |
+| sakila             | payment                                              | rental_id             | fk_payment_rental         |
+| sakila             | payment                                              | customer_id           | fk_payment_customer       |
+| sakila             | payment                                              | staff_id              | fk_payment_staff          |
+| sakila             | rental                                               | staff_id              | fk_rental_staff           |
+| sakila             | rental                                               | inventory_id          | fk_rental_inventory       |
+| sakila             | rental                                               | customer_id           | fk_rental_customer        |
+| sakila             | staff                                                | store_id              | fk_staff_store            |
+| sakila             | staff                                                | address_id            | fk_staff_address          |
+| sakila             | store                                                | manager_staff_id      | fk_store_staff            |
+| sakila             | store                                                | address_id            | fk_store_address          |
+| world              | city                                                 | CountryCode           | city_ibfk_1               |
+| world              | countrylanguage                                      | CountryCode           | countryLanguage_ibfk_1    |
+| student_info       | student                                              | GroupNumber           | GROUP_ST_FK               |
+| student_info       | phone_list                                           | StudentId             | ST_PH_FK                  |
+| student_info       | exam_sheet                                           | CourseId              | COURSE_EX_SHEET_FK        |
+| student_info       | exam_sheet                                           | TeacherId             | TEACHER_EX_SHEET_FK       |
+| student_info       | exam_sheet                                           | GroupNumber           | GROUP_EX_SHEET_FK         |
+| student_info       | exam_result                                          | ExamSheetId           | EXR_EXT_FK                |
+| student_info       | exam_result                                          | StudentId             | ST_EX_FK                  |
+| dekanatxx          | marks                                                | CourseID              | FK_Mark_Course            |
+| dekanatxx          | marks                                                | StudentID             | FK_Mark_Student           |
+| dekanatxx          | lecturers                                            | CourseID              | FK_Lecturer_Course        |
++--------------------+------------------------------------------------------+-----------------------+---------------------------+
+308 rows in set (0.02 sec)
+
+mysql> SHOW CREATE TABLE marks
+    -> ;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| marks | CREATE TABLE `marks` (
+  `StudentID` int(11) NOT NULL,
+  `CourseID` int(11) NOT NULL,
+  `Mark` int(1) DEFAULT NULL,
+  PRIMARY KEY (`StudentID`,`CourseID`),
+  KEY `FK_Mark_Course` (`CourseID`),
+  CONSTRAINT `FK_Mark_Course` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`),
+  CONSTRAINT `FK_Mark_Student` FOREIGN KEY (`StudentID`) REFERENCES `students` (`StudentID`),
+  CONSTRAINT `CHK_Mark` CHECK ((`Mark` between 1 and 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> \t
+mysql> SELECT NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2020-03-29 13:53:10 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATABASE();
++------------+
+| DATABASE() |
++------------+
+| NULL       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> USE DEKANATXX;
+Database changed
+mysql> DESC Students;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| StudentID   | int(11)     | NO   | PRI | NULL    |       |
+| LastName    | varchar(15) | NO   |     | NULL    |       |
+| FirstName   | varchar(15) | NO   |     | NULL    |       |
+| MiddleName  | varchar(15) | YES  |     | NULL    |       |
+| GroupNumber | int(11)     | NO   |     | NULL    |       |
+| PhoneNumber | char(10)    | YES  |     | NULL    |       |
+| Stipend     | int(1)      | YES  |     | 0       |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.06 sec)
+
+mysql> SHOW TABLES;
++---------------------+
+| Tables_in_dekanatxx |
++---------------------+
+| courses             |
+| lecturers           |
+| marks               |
+| students            |
++---------------------+
+4 rows in set (0.01 sec)
+
+mysql> DROP TABLE students;
+ERROR 3730 (HY000): Cannot drop table 'students' referenced by a foreign key constraint 'FK_Mark_Student' on table 'marks'.
+mysql> ALTER TABLE students MODIFY Stipend VARCHAR(3) DEFAULT 'Нет';
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC Students;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| StudentID   | int(11)     | NO   | PRI | NULL    |       |
+| LastName    | varchar(15) | NO   |     | NULL    |       |
+| FirstName   | varchar(15) | NO   |     | NULL    |       |
+| MiddleName  | varchar(15) | YES  |     | NULL    |       |
+| GroupNumber | int(11)     | NO   |     | NULL    |       |
+| PhoneNumber | char(10)    | YES  |     | NULL    |       |
+| Stipend     | varchar(3)  | YES  |     | Нет     |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE students;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                            |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| students | CREATE TABLE `students` (
+  `StudentID` int(11) NOT NULL,
+  `LastName` varchar(15) NOT NULL,
+  `FirstName` varchar(15) NOT NULL,
+  `MiddleName` varchar(15) DEFAULT NULL,
+  `GroupNumber` int(11) NOT NULL,
+  `PhoneNumber` char(10) DEFAULT NULL,
+  `Stipend` varchar(3) DEFAULT 'Нет',
+  PRIMARY KEY (`StudentID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE students ADD CONSTRAINT CHK_Stipend CHECK(Stipend IN ('Да', 'Нет'));
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW CREATE TABLE students;
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| students | CREATE TABLE `students` (
+  `StudentID` int(11) NOT NULL,
+  `LastName` varchar(15) NOT NULL,
+  `FirstName` varchar(15) NOT NULL,
+  `MiddleName` varchar(15) DEFAULT NULL,
+  `GroupNumber` int(11) NOT NULL,
+  `PhoneNumber` char(10) DEFAULT NULL,
+  `Stipend` varchar(3) DEFAULT 'Нет',
+  PRIMARY KEY (`StudentID`),
+  CONSTRAINT `CHK_Stipend` CHECK ((`Stipend` in (_cp866'??',_cp866'???')))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> DESC Students;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| StudentID   | int(11)     | NO   | PRI | NULL    |       |
+| LastName    | varchar(15) | NO   |     | NULL    |       |
+| FirstName   | varchar(15) | NO   |     | NULL    |       |
+| MiddleName  | varchar(15) | YES  |     | NULL    |       |
+| GroupNumber | int(11)     | NO   |     | NULL    |       |
+| PhoneNumber | char(10)    | YES  |     | NULL    |       |
+| Stipend     | varchar(3)  | YES  |     | Нет     |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> DESC courses;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| CourseID   | int(11)      | NO   | PRI | NULL    |       |
+| CourseName | varchar(255) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> DESC lecturerss;
+ERROR 1146 (42S02): Table 'dekanatxx.lecturerss' doesn't exist
+mysql> DESC lecturers;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| LecturerID  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName    | varchar(15) | NO   |     | NULL    |                |
+| FirstName   | varchar(15) | NO   |     | NULL    |                |
+| MiddleName  | varchar(15) | YES  |     | NULL    |                |
+| BirthDate   | date        | YES  |     | NULL    |                |
+| Position    | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber | char(10)    | YES  |     | NULL    |                |
+| CourseID    | int(11)     | NO   | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE lecturers;
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| lecturers | CREATE TABLE `lecturers` (
+  `LecturerID` int(11) NOT NULL AUTO_INCREMENT,
+  `LastName` varchar(15) NOT NULL,
+  `FirstName` varchar(15) NOT NULL,
+  `MiddleName` varchar(15) DEFAULT NULL,
+  `BirthDate` date DEFAULT NULL,
+  `Position` varchar(9) NOT NULL,
+  `PhoneNumber` char(10) DEFAULT NULL,
+  `CourseID` int(11) NOT NULL,
+  PRIMARY KEY (`LecturerID`),
+  UNIQUE KEY `LecturerID` (`LecturerID`),
+  KEY `FK_Lecturer_Course` (`CourseID`),
+  CONSTRAINT `FK_Lecturer_Course` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> DESC marks;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| StudentID | int(11) | NO   | PRI | NULL    |       |
+| CourseID  | int(11) | NO   | PRI | NULL    |       |
+| Mark      | int(1)  | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Marks MODIFY CONSTRAINT FK_Mark_Course FOREIGN KEY(CourseId) REFERENCES Courses(CourseId) ON DELETE CASCADE ON UPDATE CASCADE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CONSTRAINT FK_Mark_Course FOREIGN KEY(CourseId) REFERENCES Courses(CourseId) ON ' at line 1
+mysql> ALTER TABLE Marks DROP CONSTRAINT FK_Mark_Course;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CONSTRAINT FK_Mark_Course' at line 1
+mysql> SHOW CREATE TABLE marks;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| marks | CREATE TABLE `marks` (
+  `StudentID` int(11) NOT NULL,
+  `CourseID` int(11) NOT NULL,
+  `Mark` int(1) DEFAULT NULL,
+  PRIMARY KEY (`StudentID`,`CourseID`),
+  KEY `FK_Mark_Course` (`CourseID`),
+  CONSTRAINT `FK_Mark_Course` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`),
+  CONSTRAINT `FK_Mark_Student` FOREIGN KEY (`StudentID`) REFERENCES `students` (`StudentID`),
+  CONSTRAINT `CHK_Mark` CHECK ((`Mark` between 1 and 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE Marks DROP FOREIGN KEY FK_Mark_Course;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Marks DROP FOREIGN KEY FK_Mark_Student;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Marks DROP FOREIGN KEY FK_Lecturer_Course;
+ERROR 1091 (42000): Can't DROP 'FK_Lecturer_Course'; check that column/key exists
+mysql> SHOW CREATE TABLE marks;
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                 |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| marks | CREATE TABLE `marks` (
+  `StudentID` int(11) NOT NULL,
+  `CourseID` int(11) NOT NULL,
+  `Mark` int(1) DEFAULT NULL,
+  PRIMARY KEY (`StudentID`,`CourseID`),
+  KEY `FK_Mark_Course` (`CourseID`),
+  CONSTRAINT `CHK_Mark` CHECK ((`Mark` between 1 and 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE lecturers;
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| lecturers | CREATE TABLE `lecturers` (
+  `LecturerID` int(11) NOT NULL AUTO_INCREMENT,
+  `LastName` varchar(15) NOT NULL,
+  `FirstName` varchar(15) NOT NULL,
+  `MiddleName` varchar(15) DEFAULT NULL,
+  `BirthDate` date DEFAULT NULL,
+  `Position` varchar(9) NOT NULL,
+  `PhoneNumber` char(10) DEFAULT NULL,
+  `CourseID` int(11) NOT NULL,
+  PRIMARY KEY (`LecturerID`),
+  UNIQUE KEY `LecturerID` (`LecturerID`),
+  KEY `FK_Lecturer_Course` (`CourseID`),
+  CONSTRAINT `FK_Lecturer_Course` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE Lecturers DROP FOREIGN KEY FK_Lecturer_Course;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW CREATE TABLE lecturers;
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| lecturers | CREATE TABLE `lecturers` (
+  `LecturerID` int(11) NOT NULL AUTO_INCREMENT,
+  `LastName` varchar(15) NOT NULL,
+  `FirstName` varchar(15) NOT NULL,
+  `MiddleName` varchar(15) DEFAULT NULL,
+  `BirthDate` date DEFAULT NULL,
+  `Position` varchar(9) NOT NULL,
+  `PhoneNumber` char(10) DEFAULT NULL,
+  `CourseID` int(11) NOT NULL,
+  PRIMARY KEY (`LecturerID`),
+  UNIQUE KEY `LecturerID` (`LecturerID`),
+  KEY `FK_Lecturer_Course` (`CourseID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-----------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE Marks 
+    ->   ADD CONSTRAINT FK_Mark_Course 
+    ->   FOREIGN KEY(CourseId) REFERENCES Courses(CourseId)
+    ->   ON DELETE CASCADE
+    ->   ON UPDATE CASCADE;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Marks 
+    ->   ADD CONSTRAINT FK_Mark_Student 
+    ->   FOREIGN KEY(StudentId) REFERENCES Students(StudentId);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>   ON DELETE CASCADE
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON DELETE CASCADE' at line 1
+mysql> ALTER TABLE Marks DROP FOREIGN KEY FK_Mark_Student;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Marks 
+    ->   ADD CONSTRAINT FK_Mark_Student 
+    ->   FOREIGN KEY(StudentId) REFERENCES Students(StudentId)
+    ->   ON DELETE CASCADE
+    ->   ON UPDATE CASCADE;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE Lecturers
+    ->   ADD CONSTRAINT FK_Lecturer_Course 
+    ->   FOREIGN KEY(CourseId) REFERENCES Courses(CourseId)
+    ->   ON DELETE CASCADE
+    ->   ON UPDATE CASCADE;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW CREATE TABLE marks;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| marks | CREATE TABLE `marks` (
+  `StudentID` int(11) NOT NULL,
+  `CourseID` int(11) NOT NULL,
+  `Mark` int(1) DEFAULT NULL,
+  PRIMARY KEY (`StudentID`,`CourseID`),
+  KEY `FK_Mark_Course` (`CourseID`),
+  CONSTRAINT `FK_Mark_Course` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Mark_Student` FOREIGN KEY (`StudentID`) REFERENCES `students` (`StudentID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `CHK_Mark` CHECK ((`Mark` between 1 and 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> \t
+mysql> SELECT NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2020-03-30 11:06:37 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> USE dekanatxx;
+Database changed
+mysql> SHOW CREATE TABLE marks;
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| marks | CREATE TABLE `marks` (
+  `StudentID` int(11) NOT NULL,
+  `CourseID` int(11) NOT NULL,
+  `Mark` int(1) DEFAULT NULL,
+  PRIMARY KEY (`StudentID`,`CourseID`),
+  KEY `FK_Mark_Course` (`CourseID`),
+  CONSTRAINT `FK_Mark_Course` FOREIGN KEY (`CourseID`) REFERENCES `courses` (`CourseID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_Mark_Student` FOREIGN KEY (`StudentID`) REFERENCES `students` (`StudentID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `CHK_Mark` CHECK ((`Mark` between 1 and 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.02 sec)
+
+mysql> DESC courses;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| CourseID   | int(11)      | NO   | PRI | NULL    |       |
+| CourseName | varchar(255) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> INSERT INTO Courses VALUES (1, 'Информатика'), (2, 'Математика'), (3, 'Физика'), (4, 'Химия');
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELCT * FROM courses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELCT * FROM courses' at line 1
+mysql> SELECT * FROM courses;
++----------+-------------+
+| CourseID | CourseName  |
++----------+-------------+
+|        1 | Информатика |
+|        2 | Математика  |
+|        3 | Физика      |
+|        4 | Химия       |
++----------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> DESC students;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| StudentID   | int(11)     | NO   | PRI | NULL    |       |
+| LastName    | varchar(15) | NO   |     | NULL    |       |
+| FirstName   | varchar(15) | NO   |     | NULL    |       |
+| MiddleName  | varchar(15) | YES  |     | NULL    |       |
+| GroupNumber | int(11)     | NO   |     | NULL    |       |
+| PhoneNumber | char(10)    | YES  |     | NULL    |       |
+| Stipend     | varchar(3)  | YES  |     | Нет     |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO Students VALUES 
+    -> (1, 'Алексеев', 'Алексей', 'Алексеевич', 101, '9010000000', 'Да'), 
+    -> (2, 'Андреев', 'Андрей', 'Андреевич', 101, '9020000000', 'Нет'),
+    -> (3, 'Антонов', 'Антон', 'Антонович', 101, '9030000000', 'Да'), 
+    -> (4, 'Артемов', 'Артем', 'Артемович', 101, '9040000000', 'Нет'),
+    -> (5, 'Александров', 'Александр', 'Александрович', 101, '9050000000', 'Да'), 
+    -> (6, 'Альбертов', 'Альберт', 'Альбертович', 101, '9060000000', 'Нет'),
+    -> (7, 'Вадимов', 'Вадим', 'Вадимович', 101, '9070000000', 'Да'), 
+    -> (8, 'Владимиров', 'Владимир', 'Владимирович', 101, '9080000000', 'Нет'),
+    -> (9, 'Викторов', 'Виктор', 'Викторович', 101, '9090000000', 'Да'), 
+    -> (10, 'Вавилов', 'Вавил', 'Вавилович', 101, '9100000000', 'Нет'),
+    -> (11, 'Игорев', 'Игорь', 'Игоревич', 102, '9110000000', 'Да'), 
+    -> (12, 'Иванов', 'Иван', 'Иванович', 102, '9120000000', 'Нет'),
+    -> (13, 'Ильин', 'Илья', 'Ильич', 102, '9130000000', 'Да'), 
+    -> (14, 'Искандеров', 'Искандер', 'Искандерович', 102, '9140000000', 'Нет'),
+    -> (15, 'Кириллов', 'Кирилл', 'Кириллович', 102, '9150000000', 'Да'), 
+    -> (16, 'Константинов', 'Константин', 'Константинович', 102, '9160000000', 'Нет'),
+    -> (17, 'Максимов', 'Максим', 'Максимович', 102, '9170000000', 'Да'), 
+    -> (18, 'Михайлов', 'Михаил', 'Михайлович', 102, '9180000000', 'Нет'),
+    -> (19, 'Георгиев', 'Георгий', 'Георгиевич', 102, '9190000000', 'Да'), 
+    -> (20, 'Григорьев', 'Григорий', 'Григорьевич', 102, '9200000000', 'Нет');
+Query OK, 20 rows affected (0.01 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |
+|         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |
+|         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |
+|         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |
+|         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |
+|         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |
+|         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |
+|         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |
+|         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |
+|        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+20 rows in set (0.00 sec)
+
+mysql> DESC marks;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| StudentID | int(11) | NO   | PRI | NULL    |       |
+| CourseID  | int(11) | NO   | PRI | NULL    |       |
+| Mark      | int(1)  | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Marks VALUES
+    -> (1, 1, 5), (1, 2, 5), (1, 3, 5), (1, 4, 5),
+    -> (2, 1, 4), (2, 2, 3), (2, 3, 4), (2, 4, 3),
+    -> (3, 1, 5), (3, 2, 4), (3, 3, 5), (3, 4, 4),
+    -> (4, 1, 3), (4, 2, 4), (4, 3, 5), (4, 4, 3),
+    -> (5, 1, 5), (5, 2, 5), (5, 3, 5), (5, 4, 5),
+    -> (6, 1, 4), (6, 2, 3), (6, 3, 4), (6, 4, 3),
+    -> (7, 1, 5), (7, 2, 4), (7, 3, 5), (7, 4, 4),
+    -> (8, 1, 3), (8, 2, 4), (8, 3, 5), (8, 4, 3),
+    -> (9, 1, 5), (9, 2, 5), (9, 3, 5), (9, 4, 5),
+    -> (10, 1, 4), (10, 2, 3), (10, 3, 4), (10, 4, 3),
+    -> (11, 1, 5), (11, 2, 5), (11, 3, 5), (11, 4, 5),
+    -> (12, 1, 4), (12, 2, 3), (12, 3, 4), (12, 4, 3),
+    -> (13, 1, 5), (13, 2, 4), (13, 3, 5), (13, 4, 4),
+    -> (14, 1, 3), (14, 2, 4), (14, 3, 5), (14, 4, 3),
+    -> (15, 1, 5), (15, 2, 5), (15, 3, 5), (15, 4, 5),
+    -> (16, 1, 4), (16, 2, 3), (16, 3, 4), (16, 4, 3),
+    -> (17, 1, 5), (17, 2, 4), (17, 3, 5), (17, 4, 4),
+    -> (18, 1, 3), (18, 2, 4), (18, 3, 5), (18, 4, 3),
+    -> (19, 1, 5), (19, 2, 5), (19, 3, 5), (19, 4, 5),
+    -> (20, 1, 4), (20, 2, 3), (20, 3, 4), (20, 4, 3);
+Query OK, 80 rows affected (0.01 sec)
+Records: 80  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM marks;
++-----------+----------+------+
+| StudentID | CourseID | Mark |
++-----------+----------+------+
+|         1 |        1 |    5 |
+|         1 |        2 |    5 |
+|         1 |        3 |    5 |
+|         1 |        4 |    5 |
+|         2 |        1 |    4 |
+|         2 |        2 |    3 |
+|         2 |        3 |    4 |
+|         2 |        4 |    3 |
+|         3 |        1 |    5 |
+|         3 |        2 |    4 |
+|         3 |        3 |    5 |
+|         3 |        4 |    4 |
+|         4 |        1 |    3 |
+|         4 |        2 |    4 |
+|         4 |        3 |    5 |
+|         4 |        4 |    3 |
+|         5 |        1 |    5 |
+|         5 |        2 |    5 |
+|         5 |        3 |    5 |
+|         5 |        4 |    5 |
+|         6 |        1 |    4 |
+|         6 |        2 |    3 |
+|         6 |        3 |    4 |
+|         6 |        4 |    3 |
+|         7 |        1 |    5 |
+|         7 |        2 |    4 |
+|         7 |        3 |    5 |
+|         7 |        4 |    4 |
+|         8 |        1 |    3 |
+|         8 |        2 |    4 |
+|         8 |        3 |    5 |
+|         8 |        4 |    3 |
+|         9 |        1 |    5 |
+|         9 |        2 |    5 |
+|         9 |        3 |    5 |
+|         9 |        4 |    5 |
+|        10 |        1 |    4 |
+|        10 |        2 |    3 |
+|        10 |        3 |    4 |
+|        10 |        4 |    3 |
+|        11 |        1 |    5 |
+|        11 |        2 |    5 |
+|        11 |        3 |    5 |
+|        11 |        4 |    5 |
+|        12 |        1 |    4 |
+|        12 |        2 |    3 |
+|        12 |        3 |    4 |
+|        12 |        4 |    3 |
+|        13 |        1 |    5 |
+|        13 |        2 |    4 |
+|        13 |        3 |    5 |
+|        13 |        4 |    4 |
+|        14 |        1 |    3 |
+|        14 |        2 |    4 |
+|        14 |        3 |    5 |
+|        14 |        4 |    3 |
+|        15 |        1 |    5 |
+|        15 |        2 |    5 |
+|        15 |        3 |    5 |
+|        15 |        4 |    5 |
+|        16 |        1 |    4 |
+|        16 |        2 |    3 |
+|        16 |        3 |    4 |
+|        16 |        4 |    3 |
+|        17 |        1 |    5 |
+|        17 |        2 |    4 |
+|        17 |        3 |    5 |
+|        17 |        4 |    4 |
+|        18 |        1 |    3 |
+|        18 |        2 |    4 |
+|        18 |        3 |    5 |
+|        18 |        4 |    3 |
+|        19 |        1 |    5 |
+|        19 |        2 |    5 |
+|        19 |        3 |    5 |
+|        19 |        4 |    5 |
+|        20 |        1 |    4 |
+|        20 |        2 |    3 |
+|        20 |        3 |    4 |
+|        20 |        4 |    3 |
++-----------+----------+------+
+80 rows in set (0.00 sec)
+
+mysql> DESC lecturers;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| LecturerID  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName    | varchar(15) | NO   |     | NULL    |                |
+| FirstName   | varchar(15) | NO   |     | NULL    |                |
+| MiddleName  | varchar(15) | YES  |     | NULL    |                |
+| BirthDate   | date        | YES  |     | NULL    |                |
+| Position    | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber | char(10)    | YES  |     | NULL    |                |
+| CourseID    | int(11)     | NO   | MUL | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE lecturers ADD ServiceLength INTEGER;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC lecturers;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| LecturerID    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName      | varchar(15) | NO   |     | NULL    |                |
+| FirstName     | varchar(15) | NO   |     | NULL    |                |
+| MiddleName    | varchar(15) | YES  |     | NULL    |                |
+| BirthDate     | date        | YES  |     | NULL    |                |
+| Position      | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
+| CourseID      | int(11)     | NO   | MUL | NULL    |                |
+| ServiceLength | int(11)     | YES  |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> ALTER TABLE lecturers MODIFY CourseID INTEGER AFTER ServiceLength;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC lecturers;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| LecturerID    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName      | varchar(15) | NO   |     | NULL    |                |
+| FirstName     | varchar(15) | NO   |     | NULL    |                |
+| MiddleName    | varchar(15) | YES  |     | NULL    |                |
+| BirthDate     | date        | YES  |     | NULL    |                |
+| Position      | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
+| ServiceLength | int(11)     | YES  |     | NULL    |                |
+| CourseID      | int(11)     | YES  | MUL | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> ALTER TABLE lecturers MODIFY CourseID INTEGER AFTER Position;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC lecturers;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| LecturerID    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName      | varchar(15) | NO   |     | NULL    |                |
+| FirstName     | varchar(15) | NO   |     | NULL    |                |
+| MiddleName    | varchar(15) | YES  |     | NULL    |                |
+| BirthDate     | date        | YES  |     | NULL    |                |
+| Position      | varchar(9)  | NO   |     | NULL    |                |
+| CourseID      | int(11)     | YES  | MUL | NULL    |                |
+| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
+| ServiceLength | int(11)     | YES  |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> ALTER TABLE lecturers MODIFY CourseID INTEGER AFTER ServiceLength;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC lecturers;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| LecturerID    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| LastName      | varchar(15) | NO   |     | NULL    |                |
+| FirstName     | varchar(15) | NO   |     | NULL    |                |
+| MiddleName    | varchar(15) | YES  |     | NULL    |                |
+| BirthDate     | date        | YES  |     | NULL    |                |
+| Position      | varchar(9)  | NO   |     | NULL    |                |
+| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
+| ServiceLength | int(11)     | YES  |     | NULL    |                |
+| CourseID      | int(11)     | YES  | MUL | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> SHOW databases;
++--------------------+
+| Database           |
++--------------------+
+| dekanatxx          |
+| information_schema |
+| my1                |
+| mysql              |
+| performance_schema |
+| prepodavatelixx    |
+| sakila             |
+| student_info       |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.01 sec)
+
+mysql> use prepodavatelixx;
+Database changed
+mysql> show tables;
++---------------------------+
+| Tables_in_prepodavatelixx |
++---------------------------+
+| lecturers                 |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> DESC lecturers;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| LecturerID    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| LastName      | varchar(15)  | NO   |     | NULL    |                |
+| FirstName     | varchar(15)  | NO   |     | NULL    |                |
+| MiddleName    | varchar(15)  | YES  |     | NULL    |                |
+| BirthDate     | date         | YES  |     | NULL    |                |
+| Position      | varchar(9)   | NO   |     | Доцент  |                |
+| Course        | varchar(255) | NO   |     | NULL    |                |
+| PhoneNumber   | char(11)     | YES  |     | NULL    |                |
+| ServiceLength | int(11)      | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Lecturers;
++------------+----------+-----------+------------+------------+-----------+-------------+-------------+---------------+
+| LecturerID | LastName | FirstName | MiddleName | BirthDate  | Position  | Course      | PhoneNumber | ServiceLength |
++------------+----------+-----------+------------+------------+-----------+-------------+-------------+---------------+
+|          1 | Иванов   | Иван      | Иванович   | 1986-05-12 | Ассистент | Математика  | 89123943022 |             4 |
+|          2 | Петров   | Петр      | Петрович   | 1959-04-02 | Доцент    | Математика  | 89189200988 |            30 |
+|          3 | Андреев  | Андрей    | Андреевич  | 1972-01-23 | Профессор | Физика      | 89327539732 |            22 |
+|          4 | Васильев | Василий   | Васильевич | 1983-04-01 | Доцент    | Физика      | 89327539732 |            12 |
+|          5 | Михайлов | Михаил    | Михайлович | 1971-11-08 | Профессор | Информатика | 89738925451 |            19 |
+|          6 | Сергеев  | Сергей    | Сергеевич  | 1991-02-17 | Ассистент | Информатика | 89229923450 |             4 |
++------------+----------+-----------+------------+------------+-----------+-------------+-------------+---------------+
+6 rows in set (0.01 sec)
+
+mysql> USE dekanatxx;
+Database changed
+mysql> INSERT INTO Lecturers(LastName, FirstName, MiddleName, BirthDate, Position, PhoneNumber, ServiceLength, CourseID) VALUES
+    -> ('Петров', 'Петр', 'Петрович', "1986-05-12", 'Ассистент', '9011111111', 4, 1), 
+    -> ('Павлов', 'Павел', 'Павлович', "1959-04-02", 'Доцент', '9021111111', 30, 1),
+    -> ('Сидоров', 'Сидор', 'Сидорович', "1972-01-23", 'Профессор', '9031111111', 22, 2),
+    -> ('Сергеев', 'Сергей', 'Сергеевич', "1983-04-01", 'Доцент', '9041111111', 12, 2),
+    -> ('Русланов', 'Руслан', 'Русланович', "1971-11-08", 'Профессор', '9051111111', 4, 3),
+    -> ('Ростиславов', 'Ростислав', 'Ростиславович', "1991-02-17", 'Ассистент', '9061111111', 5, 3),
+    -> ('Тимофеев', 'Тимофей', 'Тимофеевич', "1981-04-03", 'Доцент', '9071111111', 9, 4),
+    -> ('Тамерланов', 'Тамерлан', 'Тамерланович', "1956-09-10", 'Профессор', '9081111111', 35, 4);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Lecturers;
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+| LecturerID | LastName    | FirstName | MiddleName    | BirthDate  | Position  | PhoneNumber | ServiceLength | CourseID |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+|          1 | Петров      | Петр      | Петрович      | 1986-05-12 | Ассистент | 9011111111  |             4 |        1 |
+|          2 | Павлов      | Павел     | Павлович      | 1959-04-02 | Доцент    | 9021111111  |            30 |        1 |
+|          3 | Сидоров     | Сидор     | Сидорович     | 1972-01-23 | Профессор | 9031111111  |            22 |        2 |
+|          4 | Сергеев     | Сергей    | Сергеевич     | 1983-04-01 | Доцент    | 9041111111  |            12 |        2 |
+|          5 | Русланов    | Руслан    | Русланович    | 1971-11-08 | Профессор | 9051111111  |             4 |        3 |
+|          6 | Ростиславов | Ростислав | Ростиславович | 1991-02-17 | Ассистент | 9061111111  |             5 |        3 |
+|          7 | Тимофеев    | Тимофей   | Тимофеевич    | 1981-04-03 | Доцент    | 9071111111  |             9 |        4 |
+|          8 | Тамерланов  | Тамерлан  | Тамерланович  | 1956-09-10 | Профессор | 9081111111  |            35 |        4 |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT ALL
+    -> FROM Students
+    -> WHERE GroupNamber = 101;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM Students
+WHERE GroupNamber = 101' at line 2
+mysql> SELECT ALL FROM Students WHERE GroupNumber = 101;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM Students WHERE GroupNumber = 101' at line 1
+mysql> SELECT * FROM Students;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |
+|         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |
+|         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |
+|         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |
+|         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |
+|         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |
+|         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |
+|         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |
+|         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |
+|        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT ALL FROM Students;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM Students' at line 1
+mysql> SELECT * FROM Students;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |
+|         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |
+|         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |
+|         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |
+|         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |
+|         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |
+|         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |
+|         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |
+|         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |
+|        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT *ALL FROM Students WHERE GroupNumber = 101;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ALL FROM Students WHERE GroupNumber = 101' at line 1
+mysql> SELECT * FROM Students WHERE GroupNumber = 101;
++-----------+-------------+-----------+---------------+-------------+-------------+---------+
+| StudentID | LastName    | FirstName | MiddleName    | GroupNumber | PhoneNumber | Stipend |
++-----------+-------------+-----------+---------------+-------------+-------------+---------+
+|         1 | Алексеев    | Алексей   | Алексеевич    |         101 | 9010000000  | Да      |
+|         2 | Андреев     | Андрей    | Андреевич     |         101 | 9020000000  | Нет     |
+|         3 | Антонов     | Антон     | Антонович     |         101 | 9030000000  | Да      |
+|         4 | Артемов     | Артем     | Артемович     |         101 | 9040000000  | Нет     |
+|         5 | Александров | Александр | Александрович |         101 | 9050000000  | Да      |
+|         6 | Альбертов   | Альберт   | Альбертович   |         101 | 9060000000  | Нет     |
+|         7 | Вадимов     | Вадим     | Вадимович     |         101 | 9070000000  | Да      |
+|         8 | Владимиров  | Владимир  | Владимирович  |         101 | 9080000000  | Нет     |
+|         9 | Викторов    | Виктор    | Викторович    |         101 | 9090000000  | Да      |
+|        10 | Вавилов     | Вавил     | Вавилович     |         101 | 9100000000  | Нет     |
++-----------+-------------+-----------+---------------+-------------+-------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Students WHERE GroupNumber = 102;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT LastName, FirstName, MiddleName, GroupNumber, CourseName, Mark
+    -> FROM Students 
+    -> INNER JOIN Marks ON Students.StudentID = Marks.StudentID
+    -> INNER JOIN Courses ON Courses.CourseID = Marks.CourseID 
+    -> WHERE GroupNumber = 101 AND CourseName = 'Информатика';
++-------------+-----------+---------------+-------------+-------------+------+
+| LastName    | FirstName | MiddleName    | GroupNumber | CourseName  | Mark |
++-------------+-----------+---------------+-------------+-------------+------+
+| Алексеев    | Алексей   | Алексеевич    |         101 | Информатика |    5 |
+| Андреев     | Андрей    | Андреевич     |         101 | Информатика |    4 |
+| Антонов     | Антон     | Антонович     |         101 | Информатика |    5 |
+| Артемов     | Артем     | Артемович     |         101 | Информатика |    3 |
+| Александров | Александр | Александрович |         101 | Информатика |    5 |
+| Альбертов   | Альберт   | Альбертович   |         101 | Информатика |    4 |
+| Вадимов     | Вадим     | Вадимович     |         101 | Информатика |    5 |
+| Владимиров  | Владимир  | Владимирович  |         101 | Информатика |    3 |
+| Викторов    | Виктор    | Викторович    |         101 | Информатика |    5 |
+| Вавилов     | Вавил     | Вавилович     |         101 | Информатика |    4 |
++-------------+-----------+---------------+-------------+-------------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT LastName, FirstName, MiddleName, GroupNumber, CourseName, Mark FROM Students INNER JOIN Marks ON Students.StudentID = Marks.StudentID INNER JOIN Courses ON Courses.CourseID = Marks.CourseID WHERE GroupNumber = 101 AND CourseName = 'Информатика';
++-------------+-----------+---------------+-------------+-------------+------+
+| LastName    | FirstName | MiddleName    | GroupNumber | CourseName  | Mark |
++-------------+-----------+---------------+-------------+-------------+------+
+| Алексеев    | Алексей   | Алексеевич    |         101 | Информатика |    5 |
+| Андреев     | Андрей    | Андреевич     |         101 | Информатика |    4 |
+| Антонов     | Антон     | Антонович     |         101 | Информатика |    5 |
+| Артемов     | Артем     | Артемович     |         101 | Информатика |    3 |
+| Александров | Александр | Александрович |         101 | Информатика |    5 |
+| Альбертов   | Альберт   | Альбертович   |         101 | Информатика |    4 |
+| Вадимов     | Вадим     | Вадимович     |         101 | Информатика |    5 |
+| Владимиров  | Владимир  | Владимирович  |         101 | Информатика |    3 |
+| Викторов    | Виктор    | Викторович    |         101 | Информатика |    5 |
+| Вавилов     | Вавил     | Вавилович     |         101 | Информатика |    4 |
++-------------+-----------+---------------+-------------+-------------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT LastName, FirstName, MiddleName, GroupNumber, CourseName, Mark FROM Students INNER JOIN Marks ON Students.StudentID = Marks.StudentID INNER JOIN Courses ON Courses.CourseID = Marks.CourseID WHERE GroupNumber = 101 AND CourseName = 'Физика';
++-------------+-----------+---------------+-------------+------------+------+
+| LastName    | FirstName | MiddleName    | GroupNumber | CourseName | Mark |
++-------------+-----------+---------------+-------------+------------+------+
+| Алексеев    | Алексей   | Алексеевич    |         101 | Физика     |    5 |
+| Андреев     | Андрей    | Андреевич     |         101 | Физика     |    4 |
+| Антонов     | Антон     | Антонович     |         101 | Физика     |    5 |
+| Артемов     | Артем     | Артемович     |         101 | Физика     |    5 |
+| Александров | Александр | Александрович |         101 | Физика     |    5 |
+| Альбертов   | Альберт   | Альбертович   |         101 | Физика     |    4 |
+| Вадимов     | Вадим     | Вадимович     |         101 | Физика     |    5 |
+| Владимиров  | Владимир  | Владимирович  |         101 | Физика     |    5 |
+| Викторов    | Виктор    | Викторович    |         101 | Физика     |    5 |
+| Вавилов     | Вавил     | Вавилович     |         101 | Физика     |    4 |
++-------------+-----------+---------------+-------------+------------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT LastName, FirstName, MiddleName, GroupNumber, CourseName, Mark FROM Students INNER JOIN Marks ON Students.StudentID = Marks.StudentID INNER JOIN Courses ON Courses.CourseID = Marks.CourseID WHERE GroupNumber = 102 AND CourseName = 'Физика';
++--------------+------------+----------------+-------------+------------+------+
+| LastName     | FirstName  | MiddleName     | GroupNumber | CourseName | Mark |
++--------------+------------+----------------+-------------+------------+------+
+| Игорев       | Игорь      | Игоревич       |         102 | Физика     |    5 |
+| Иванов       | Иван       | Иванович       |         102 | Физика     |    4 |
+| Ильин        | Илья       | Ильич          |         102 | Физика     |    5 |
+| Искандеров   | Искандер   | Искандерович   |         102 | Физика     |    5 |
+| Кириллов     | Кирилл     | Кириллович     |         102 | Физика     |    5 |
+| Константинов | Константин | Константинович |         102 | Физика     |    4 |
+| Максимов     | Максим     | Максимович     |         102 | Физика     |    5 |
+| Михайлов     | Михаил     | Михайлович     |         102 | Физика     |    5 |
+| Георгиев     | Георгий    | Георгиевич     |         102 | Физика     |    5 |
+| Григорьев    | Григорий   | Григорьевич    |         102 | Физика     |    4 |
++--------------+------------+----------------+-------------+------------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Students INNER JOIN Marks ON Students.StudentID = Marks.StudentID INNER JOIN Courses ON Courses.CourseID = Marks.CourseID WHERE GroupNumber = 101 AND CourseName = 'Информатика';
++-----------+-------------+-----------+---------------+-------------+-------------+---------+-----------+----------+------+----------+-------------+
+| StudentID | LastName    | FirstName | MiddleName    | GroupNumber | PhoneNumber | Stipend | StudentID | CourseID | Mark | CourseID | CourseName  |
++-----------+-------------+-----------+---------------+-------------+-------------+---------+-----------+----------+------+----------+-------------+
+|         1 | Алексеев    | Алексей   | Алексеевич    |         101 | 9010000000  | Да      |         1 |        1 |    5 |        1 | Информатика |
+|         2 | Андреев     | Андрей    | Андреевич     |         101 | 9020000000  | Нет     |         2 |        1 |    4 |        1 | Информатика |
+|         3 | Антонов     | Антон     | Антонович     |         101 | 9030000000  | Да      |         3 |        1 |    5 |        1 | Информатика |
+|         4 | Артемов     | Артем     | Артемович     |         101 | 9040000000  | Нет     |         4 |        1 |    3 |        1 | Информатика |
+|         5 | Александров | Александр | Александрович |         101 | 9050000000  | Да      |         5 |        1 |    5 |        1 | Информатика |
+|         6 | Альбертов   | Альберт   | Альбертович   |         101 | 9060000000  | Нет     |         6 |        1 |    4 |        1 | Информатика |
+|         7 | Вадимов     | Вадим     | Вадимович     |         101 | 9070000000  | Да      |         7 |        1 |    5 |        1 | Информатика |
+|         8 | Владимиров  | Владимир  | Владимирович  |         101 | 9080000000  | Нет     |         8 |        1 |    3 |        1 | Информатика |
+|         9 | Викторов    | Виктор    | Викторович    |         101 | 9090000000  | Да      |         9 |        1 |    5 |        1 | Информатика |
+|        10 | Вавилов     | Вавил     | Вавилович     |         101 | 9100000000  | Нет     |        10 |        1 |    4 |        1 | Информатика |
++-----------+-------------+-----------+---------------+-------------+-------------+---------+-----------+----------+------+----------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT S.LastName, S.FirstName, S.MiddleName, S.GroupNumber, C.CourseName, M.Mark 
+    -> FROM Students AS S
+    -> INNER JOIN Marks AS M ON S.StudentID = M.StudentID 
+    -> INNER JOIN Courses AS C ON C.CourseID = M.CourseID 
+    -> WHERE S.GroupNumber = 101 AND C.CourseName = 'Физика';
++-------------+-----------+---------------+-------------+------------+------+
+| LastName    | FirstName | MiddleName    | GroupNumber | CourseName | Mark |
++-------------+-----------+---------------+-------------+------------+------+
+| Алексеев    | Алексей   | Алексеевич    |         101 | Физика     |    5 |
+| Андреев     | Андрей    | Андреевич     |         101 | Физика     |    4 |
+| Антонов     | Антон     | Антонович     |         101 | Физика     |    5 |
+| Артемов     | Артем     | Артемович     |         101 | Физика     |    5 |
+| Александров | Александр | Александрович |         101 | Физика     |    5 |
+| Альбертов   | Альберт   | Альбертович   |         101 | Физика     |    4 |
+| Вадимов     | Вадим     | Вадимович     |         101 | Физика     |    5 |
+| Владимиров  | Владимир  | Владимирович  |         101 | Физика     |    5 |
+| Викторов    | Виктор    | Викторович    |         101 | Физика     |    5 |
+| Вавилов     | Вавил     | Вавилович     |         101 | Физика     |    4 |
++-------------+-----------+---------------+-------------+------------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT S.LastName, S.FirstName, S.MiddleName, S.GroupNumber, C.CourseName, M.Mark 
+    -> FROM Students S
+    -> INNER JOIN Marks M ON S.StudentID = M.StudentID 
+    -> INNER JOIN Courses C ON C.CourseID = M.CourseID 
+    -> WHERE S.GroupNumber = 101 AND C.CourseName = 'Физика';
++-------------+-----------+---------------+-------------+------------+------+
+| LastName    | FirstName | MiddleName    | GroupNumber | CourseName | Mark |
++-------------+-----------+---------------+-------------+------------+------+
+| Алексеев    | Алексей   | Алексеевич    |         101 | Физика     |    5 |
+| Андреев     | Андрей    | Андреевич     |         101 | Физика     |    4 |
+| Антонов     | Антон     | Антонович     |         101 | Физика     |    5 |
+| Артемов     | Артем     | Артемович     |         101 | Физика     |    5 |
+| Александров | Александр | Александрович |         101 | Физика     |    5 |
+| Альбертов   | Альберт   | Альбертович   |         101 | Физика     |    4 |
+| Вадимов     | Вадим     | Вадимович     |         101 | Физика     |    5 |
+| Владимиров  | Владимир  | Владимирович  |         101 | Физика     |    5 |
+| Викторов    | Виктор    | Викторович    |         101 | Физика     |    5 |
+| Вавилов     | Вавил     | Вавилович     |         101 | Физика     |    4 |
++-------------+-----------+---------------+-------------+------------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses ON M.CourseID = C.CourseID GROUP BY C.CourseName;
+ERROR 1054 (42S22): Unknown column 'C.CourseName' in 'field list'
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      4.0000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName; 
++-----------+----------+------+-----------+----------+-----------+------------+-------------+-------------+---------+----------+-------------+
+| StudentID | CourseID | Mark | StudentID | LastName | FirstName | MiddleName | GroupNumber | PhoneNumber | Stipend | CourseID | CourseName  |
++-----------+----------+------+-----------+----------+-----------+------------+-------------+-------------+---------+----------+-------------+
+|         1 |        1 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        1 | Информатика |
+|         1 |        2 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        2 | Математика  |
+|         1 |        3 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        3 | Физика      |
+|         1 |        4 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        4 | Химия       |
++-----------+----------+------+-----------+----------+-----------+------------+-------------+-------------+---------+----------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID; 
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+| StudentID | CourseID | Mark | StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend | CourseID | CourseName  |
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+|         1 |        1 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        1 | Информатика |
+|         2 |        1 |    4 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        1 | Информатика |
+|         3 |        1 |    5 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        1 | Информатика |
+|         4 |        1 |    3 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        1 | Информатика |
+|         5 |        1 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        1 | Информатика |
+|         6 |        1 |    4 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        1 | Информатика |
+|         7 |        1 |    5 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        1 | Информатика |
+|         8 |        1 |    3 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        1 | Информатика |
+|         9 |        1 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        1 | Информатика |
+|        10 |        1 |    4 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        1 | Информатика |
+|        11 |        1 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        1 | Информатика |
+|        12 |        1 |    4 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        1 | Информатика |
+|        13 |        1 |    5 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        1 | Информатика |
+|        14 |        1 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        1 | Информатика |
+|        15 |        1 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        1 | Информатика |
+|        16 |        1 |    4 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        1 | Информатика |
+|        17 |        1 |    5 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        1 | Информатика |
+|        18 |        1 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        1 | Информатика |
+|        19 |        1 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        1 | Информатика |
+|        20 |        1 |    4 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        1 | Информатика |
+|         1 |        2 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        2 | Математика  |
+|         2 |        2 |    3 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        2 | Математика  |
+|         3 |        2 |    4 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        2 | Математика  |
+|         4 |        2 |    4 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        2 | Математика  |
+|         5 |        2 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        2 | Математика  |
+|         6 |        2 |    3 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        2 | Математика  |
+|         7 |        2 |    4 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        2 | Математика  |
+|         8 |        2 |    4 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        2 | Математика  |
+|         9 |        2 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        2 | Математика  |
+|        10 |        2 |    3 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        2 | Математика  |
+|        11 |        2 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        2 | Математика  |
+|        12 |        2 |    3 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        2 | Математика  |
+|        13 |        2 |    4 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        2 | Математика  |
+|        14 |        2 |    4 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        2 | Математика  |
+|        15 |        2 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        2 | Математика  |
+|        16 |        2 |    3 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        2 | Математика  |
+|        17 |        2 |    4 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        2 | Математика  |
+|        18 |        2 |    4 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        2 | Математика  |
+|        19 |        2 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        2 | Математика  |
+|        20 |        2 |    3 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        2 | Математика  |
+|         1 |        3 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        3 | Физика      |
+|         2 |        3 |    4 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        3 | Физика      |
+|         3 |        3 |    5 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        3 | Физика      |
+|         4 |        3 |    5 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        3 | Физика      |
+|         5 |        3 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        3 | Физика      |
+|         6 |        3 |    4 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        3 | Физика      |
+|         7 |        3 |    5 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        3 | Физика      |
+|         8 |        3 |    5 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        3 | Физика      |
+|         9 |        3 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        3 | Физика      |
+|        10 |        3 |    4 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        3 | Физика      |
+|        11 |        3 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        3 | Физика      |
+|        12 |        3 |    4 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        3 | Физика      |
+|        13 |        3 |    5 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        3 | Физика      |
+|        14 |        3 |    5 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        3 | Физика      |
+|        15 |        3 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        3 | Физика      |
+|        16 |        3 |    4 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        3 | Физика      |
+|        17 |        3 |    5 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        3 | Физика      |
+|        18 |        3 |    5 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        3 | Физика      |
+|        19 |        3 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        3 | Физика      |
+|        20 |        3 |    4 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        3 | Физика      |
+|         1 |        4 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        4 | Химия       |
+|         2 |        4 |    3 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        4 | Химия       |
+|         3 |        4 |    4 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        4 | Химия       |
+|         4 |        4 |    3 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        4 | Химия       |
+|         5 |        4 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        4 | Химия       |
+|         6 |        4 |    3 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        4 | Химия       |
+|         7 |        4 |    4 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        4 | Химия       |
+|         8 |        4 |    3 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        4 | Химия       |
+|         9 |        4 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        4 | Химия       |
+|        10 |        4 |    3 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        4 | Химия       |
+|        11 |        4 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        4 | Химия       |
+|        12 |        4 |    3 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        4 | Химия       |
+|        13 |        4 |    4 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        4 | Химия       |
+|        14 |        4 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        4 | Химия       |
+|        15 |        4 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        4 | Химия       |
+|        16 |        4 |    3 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        4 | Химия       |
+|        17 |        4 |    4 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        4 | Химия       |
+|        18 |        4 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        4 | Химия       |
+|        19 |        4 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        4 | Химия       |
+|        20 |        4 |    3 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        4 | Химия       |
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+80 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      4.0000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName HAVING GroupNumber = 101;
+ERROR 1054 (42S22): Unknown column 'GroupNumber' in 'having clause'
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName HAVING S.GroupNumber = 101;
+ERROR 1054 (42S22): Unknown column 'S.GroupNumber' in 'having clause'
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName HAVING C.CourseName = 'Физика';
++------------+-------------+
+| CourseName | AVG(M.Mark) |
++------------+-------------+
+| Физика     |      4.7000 |
++------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      4.0000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE Marks SET Mark = Mark - 1 WHERE CourseID = 2 AND (StudentID = 14 OR StudentID = 18); 
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM Marks;
++-----------+----------+------+
+| StudentID | CourseID | Mark |
++-----------+----------+------+
+|         1 |        1 |    5 |
+|         1 |        2 |    5 |
+|         1 |        3 |    5 |
+|         1 |        4 |    5 |
+|         2 |        1 |    4 |
+|         2 |        2 |    3 |
+|         2 |        3 |    4 |
+|         2 |        4 |    3 |
+|         3 |        1 |    5 |
+|         3 |        2 |    4 |
+|         3 |        3 |    5 |
+|         3 |        4 |    4 |
+|         4 |        1 |    3 |
+|         4 |        2 |    4 |
+|         4 |        3 |    5 |
+|         4 |        4 |    3 |
+|         5 |        1 |    5 |
+|         5 |        2 |    5 |
+|         5 |        3 |    5 |
+|         5 |        4 |    5 |
+|         6 |        1 |    4 |
+|         6 |        2 |    3 |
+|         6 |        3 |    4 |
+|         6 |        4 |    3 |
+|         7 |        1 |    5 |
+|         7 |        2 |    4 |
+|         7 |        3 |    5 |
+|         7 |        4 |    4 |
+|         8 |        1 |    3 |
+|         8 |        2 |    4 |
+|         8 |        3 |    5 |
+|         8 |        4 |    3 |
+|         9 |        1 |    5 |
+|         9 |        2 |    5 |
+|         9 |        3 |    5 |
+|         9 |        4 |    5 |
+|        10 |        1 |    4 |
+|        10 |        2 |    3 |
+|        10 |        3 |    4 |
+|        10 |        4 |    3 |
+|        11 |        1 |    5 |
+|        11 |        2 |    5 |
+|        11 |        3 |    5 |
+|        11 |        4 |    5 |
+|        12 |        1 |    4 |
+|        12 |        2 |    3 |
+|        12 |        3 |    4 |
+|        12 |        4 |    3 |
+|        13 |        1 |    5 |
+|        13 |        2 |    4 |
+|        13 |        3 |    5 |
+|        13 |        4 |    4 |
+|        14 |        1 |    3 |
+|        14 |        2 |    3 |
+|        14 |        3 |    5 |
+|        14 |        4 |    3 |
+|        15 |        1 |    5 |
+|        15 |        2 |    5 |
+|        15 |        3 |    5 |
+|        15 |        4 |    5 |
+|        16 |        1 |    4 |
+|        16 |        2 |    3 |
+|        16 |        3 |    4 |
+|        16 |        4 |    3 |
+|        17 |        1 |    5 |
+|        17 |        2 |    4 |
+|        17 |        3 |    5 |
+|        17 |        4 |    4 |
+|        18 |        1 |    3 |
+|        18 |        2 |    3 |
+|        18 |        3 |    5 |
+|        18 |        4 |    3 |
+|        19 |        1 |    5 |
+|        19 |        2 |    5 |
+|        19 |        3 |    5 |
+|        19 |        4 |    5 |
+|        20 |        1 |    4 |
+|        20 |        2 |    3 |
+|        20 |        3 |    4 |
+|        20 |        4 |    3 |
++-----------+----------+------+
+80 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      3.9000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      4.0000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      3.8000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-----------+----------+------+-----------+----------+-----------+------------+-------------+-------------+---------+----------+-------------+
+| StudentID | CourseID | Mark | StudentID | LastName | FirstName | MiddleName | GroupNumber | PhoneNumber | Stipend | CourseID | CourseName  |
++-----------+----------+------+-----------+----------+-----------+------------+-------------+-------------+---------+----------+-------------+
+|         1 |        1 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        1 | Информатика |
+|         1 |        2 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        2 | Математика  |
+|         1 |        3 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        3 | Физика      |
+|         1 |        4 |    5 |         1 | Алексеев | Алексей   | Алексеевич |         101 | 9010000000  | Да      |        4 | Химия       |
++-----------+----------+------+-----------+----------+-----------+------------+-------------+-------------+---------+----------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID;
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+| StudentID | CourseID | Mark | StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend | CourseID | CourseName  |
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+|         1 |        1 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        1 | Информатика |
+|         2 |        1 |    4 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        1 | Информатика |
+|         3 |        1 |    5 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        1 | Информатика |
+|         4 |        1 |    3 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        1 | Информатика |
+|         5 |        1 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        1 | Информатика |
+|         6 |        1 |    4 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        1 | Информатика |
+|         7 |        1 |    5 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        1 | Информатика |
+|         8 |        1 |    3 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        1 | Информатика |
+|         9 |        1 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        1 | Информатика |
+|        10 |        1 |    4 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        1 | Информатика |
+|        11 |        1 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        1 | Информатика |
+|        12 |        1 |    4 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        1 | Информатика |
+|        13 |        1 |    5 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        1 | Информатика |
+|        14 |        1 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        1 | Информатика |
+|        15 |        1 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        1 | Информатика |
+|        16 |        1 |    4 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        1 | Информатика |
+|        17 |        1 |    5 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        1 | Информатика |
+|        18 |        1 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        1 | Информатика |
+|        19 |        1 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        1 | Информатика |
+|        20 |        1 |    4 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        1 | Информатика |
+|         1 |        2 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        2 | Математика  |
+|         2 |        2 |    3 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        2 | Математика  |
+|         3 |        2 |    4 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        2 | Математика  |
+|         4 |        2 |    4 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        2 | Математика  |
+|         5 |        2 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        2 | Математика  |
+|         6 |        2 |    3 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        2 | Математика  |
+|         7 |        2 |    4 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        2 | Математика  |
+|         8 |        2 |    4 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        2 | Математика  |
+|         9 |        2 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        2 | Математика  |
+|        10 |        2 |    3 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        2 | Математика  |
+|        11 |        2 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        2 | Математика  |
+|        12 |        2 |    3 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        2 | Математика  |
+|        13 |        2 |    4 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        2 | Математика  |
+|        14 |        2 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        2 | Математика  |
+|        15 |        2 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        2 | Математика  |
+|        16 |        2 |    3 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        2 | Математика  |
+|        17 |        2 |    4 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        2 | Математика  |
+|        18 |        2 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        2 | Математика  |
+|        19 |        2 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        2 | Математика  |
+|        20 |        2 |    3 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        2 | Математика  |
+|         1 |        3 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        3 | Физика      |
+|         2 |        3 |    4 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        3 | Физика      |
+|         3 |        3 |    5 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        3 | Физика      |
+|         4 |        3 |    5 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        3 | Физика      |
+|         5 |        3 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        3 | Физика      |
+|         6 |        3 |    4 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        3 | Физика      |
+|         7 |        3 |    5 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        3 | Физика      |
+|         8 |        3 |    5 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        3 | Физика      |
+|         9 |        3 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        3 | Физика      |
+|        10 |        3 |    4 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        3 | Физика      |
+|        11 |        3 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        3 | Физика      |
+|        12 |        3 |    4 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        3 | Физика      |
+|        13 |        3 |    5 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        3 | Физика      |
+|        14 |        3 |    5 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        3 | Физика      |
+|        15 |        3 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        3 | Физика      |
+|        16 |        3 |    4 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        3 | Физика      |
+|        17 |        3 |    5 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        3 | Физика      |
+|        18 |        3 |    5 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        3 | Физика      |
+|        19 |        3 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        3 | Физика      |
+|        20 |        3 |    4 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        3 | Физика      |
+|         1 |        4 |    5 |         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |        4 | Химия       |
+|         2 |        4 |    3 |         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |        4 | Химия       |
+|         3 |        4 |    4 |         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |        4 | Химия       |
+|         4 |        4 |    3 |         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |        4 | Химия       |
+|         5 |        4 |    5 |         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |        4 | Химия       |
+|         6 |        4 |    3 |         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |        4 | Химия       |
+|         7 |        4 |    4 |         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |        4 | Химия       |
+|         8 |        4 |    3 |         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |        4 | Химия       |
+|         9 |        4 |    5 |         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |        4 | Химия       |
+|        10 |        4 |    3 |        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |        4 | Химия       |
+|        11 |        4 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        4 | Химия       |
+|        12 |        4 |    3 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        4 | Химия       |
+|        13 |        4 |    4 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        4 | Химия       |
+|        14 |        4 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        4 | Химия       |
+|        15 |        4 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        4 | Химия       |
+|        16 |        4 |    3 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        4 | Химия       |
+|        17 |        4 |    4 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        4 | Химия       |
+|        18 |        4 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        4 | Химия       |
+|        19 |        4 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        4 | Химия       |
+|        20 |        4 |    3 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        4 | Химия       |
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+80 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) JOIN Courses C ON M.CourseID = C.CourseID;
++-----------+----------+------+-----------+-------------+-----------+---------------+-------------+-------------+---------+----------+-------------+
+| StudentID | CourseID | Mark | StudentID | LastName    | FirstName | MiddleName    | GroupNumber | PhoneNumber | Stipend | CourseID | CourseName  |
++-----------+----------+------+-----------+-------------+-----------+---------------+-------------+-------------+---------+----------+-------------+
+|         1 |        1 |    5 |         1 | Алексеев    | Алексей   | Алексеевич    |         101 | 9010000000  | Да      |        1 | Информатика |
+|         2 |        1 |    4 |         2 | Андреев     | Андрей    | Андреевич     |         101 | 9020000000  | Нет     |        1 | Информатика |
+|         3 |        1 |    5 |         3 | Антонов     | Антон     | Антонович     |         101 | 9030000000  | Да      |        1 | Информатика |
+|         4 |        1 |    3 |         4 | Артемов     | Артем     | Артемович     |         101 | 9040000000  | Нет     |        1 | Информатика |
+|         5 |        1 |    5 |         5 | Александров | Александр | Александрович |         101 | 9050000000  | Да      |        1 | Информатика |
+|         6 |        1 |    4 |         6 | Альбертов   | Альберт   | Альбертович   |         101 | 9060000000  | Нет     |        1 | Информатика |
+|         7 |        1 |    5 |         7 | Вадимов     | Вадим     | Вадимович     |         101 | 9070000000  | Да      |        1 | Информатика |
+|         8 |        1 |    3 |         8 | Владимиров  | Владимир  | Владимирович  |         101 | 9080000000  | Нет     |        1 | Информатика |
+|         9 |        1 |    5 |         9 | Викторов    | Виктор    | Викторович    |         101 | 9090000000  | Да      |        1 | Информатика |
+|        10 |        1 |    4 |        10 | Вавилов     | Вавил     | Вавилович     |         101 | 9100000000  | Нет     |        1 | Информатика |
+|         1 |        2 |    5 |         1 | Алексеев    | Алексей   | Алексеевич    |         101 | 9010000000  | Да      |        2 | Математика  |
+|         2 |        2 |    3 |         2 | Андреев     | Андрей    | Андреевич     |         101 | 9020000000  | Нет     |        2 | Математика  |
+|         3 |        2 |    4 |         3 | Антонов     | Антон     | Антонович     |         101 | 9030000000  | Да      |        2 | Математика  |
+|         4 |        2 |    4 |         4 | Артемов     | Артем     | Артемович     |         101 | 9040000000  | Нет     |        2 | Математика  |
+|         5 |        2 |    5 |         5 | Александров | Александр | Александрович |         101 | 9050000000  | Да      |        2 | Математика  |
+|         6 |        2 |    3 |         6 | Альбертов   | Альберт   | Альбертович   |         101 | 9060000000  | Нет     |        2 | Математика  |
+|         7 |        2 |    4 |         7 | Вадимов     | Вадим     | Вадимович     |         101 | 9070000000  | Да      |        2 | Математика  |
+|         8 |        2 |    4 |         8 | Владимиров  | Владимир  | Владимирович  |         101 | 9080000000  | Нет     |        2 | Математика  |
+|         9 |        2 |    5 |         9 | Викторов    | Виктор    | Викторович    |         101 | 9090000000  | Да      |        2 | Математика  |
+|        10 |        2 |    3 |        10 | Вавилов     | Вавил     | Вавилович     |         101 | 9100000000  | Нет     |        2 | Математика  |
+|         1 |        3 |    5 |         1 | Алексеев    | Алексей   | Алексеевич    |         101 | 9010000000  | Да      |        3 | Физика      |
+|         2 |        3 |    4 |         2 | Андреев     | Андрей    | Андреевич     |         101 | 9020000000  | Нет     |        3 | Физика      |
+|         3 |        3 |    5 |         3 | Антонов     | Антон     | Антонович     |         101 | 9030000000  | Да      |        3 | Физика      |
+|         4 |        3 |    5 |         4 | Артемов     | Артем     | Артемович     |         101 | 9040000000  | Нет     |        3 | Физика      |
+|         5 |        3 |    5 |         5 | Александров | Александр | Александрович |         101 | 9050000000  | Да      |        3 | Физика      |
+|         6 |        3 |    4 |         6 | Альбертов   | Альберт   | Альбертович   |         101 | 9060000000  | Нет     |        3 | Физика      |
+|         7 |        3 |    5 |         7 | Вадимов     | Вадим     | Вадимович     |         101 | 9070000000  | Да      |        3 | Физика      |
+|         8 |        3 |    5 |         8 | Владимиров  | Владимир  | Владимирович  |         101 | 9080000000  | Нет     |        3 | Физика      |
+|         9 |        3 |    5 |         9 | Викторов    | Виктор    | Викторович    |         101 | 9090000000  | Да      |        3 | Физика      |
+|        10 |        3 |    4 |        10 | Вавилов     | Вавил     | Вавилович     |         101 | 9100000000  | Нет     |        3 | Физика      |
+|         1 |        4 |    5 |         1 | Алексеев    | Алексей   | Алексеевич    |         101 | 9010000000  | Да      |        4 | Химия       |
+|         2 |        4 |    3 |         2 | Андреев     | Андрей    | Андреевич     |         101 | 9020000000  | Нет     |        4 | Химия       |
+|         3 |        4 |    4 |         3 | Антонов     | Антон     | Антонович     |         101 | 9030000000  | Да      |        4 | Химия       |
+|         4 |        4 |    3 |         4 | Артемов     | Артем     | Артемович     |         101 | 9040000000  | Нет     |        4 | Химия       |
+|         5 |        4 |    5 |         5 | Александров | Александр | Александрович |         101 | 9050000000  | Да      |        4 | Химия       |
+|         6 |        4 |    3 |         6 | Альбертов   | Альберт   | Альбертович   |         101 | 9060000000  | Нет     |        4 | Химия       |
+|         7 |        4 |    4 |         7 | Вадимов     | Вадим     | Вадимович     |         101 | 9070000000  | Да      |        4 | Химия       |
+|         8 |        4 |    3 |         8 | Владимиров  | Владимир  | Владимирович  |         101 | 9080000000  | Нет     |        4 | Химия       |
+|         9 |        4 |    5 |         9 | Викторов    | Виктор    | Викторович    |         101 | 9090000000  | Да      |        4 | Химия       |
+|        10 |        4 |    3 |        10 | Вавилов     | Вавил     | Вавилович     |         101 | 9100000000  | Нет     |        4 | Химия       |
++-----------+----------+------+-----------+-------------+-----------+---------------+-------------+-------------+---------+----------+-------------+
+40 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID;
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+| StudentID | CourseID | Mark | StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend | CourseID | CourseName  |
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+|        11 |        1 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        1 | Информатика |
+|        12 |        1 |    4 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        1 | Информатика |
+|        13 |        1 |    5 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        1 | Информатика |
+|        14 |        1 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        1 | Информатика |
+|        15 |        1 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        1 | Информатика |
+|        16 |        1 |    4 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        1 | Информатика |
+|        17 |        1 |    5 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        1 | Информатика |
+|        18 |        1 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        1 | Информатика |
+|        19 |        1 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        1 | Информатика |
+|        20 |        1 |    4 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        1 | Информатика |
+|        11 |        2 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        2 | Математика  |
+|        12 |        2 |    3 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        2 | Математика  |
+|        13 |        2 |    4 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        2 | Математика  |
+|        14 |        2 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        2 | Математика  |
+|        15 |        2 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        2 | Математика  |
+|        16 |        2 |    3 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        2 | Математика  |
+|        17 |        2 |    4 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        2 | Математика  |
+|        18 |        2 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        2 | Математика  |
+|        19 |        2 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        2 | Математика  |
+|        20 |        2 |    3 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        2 | Математика  |
+|        11 |        3 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        3 | Физика      |
+|        12 |        3 |    4 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        3 | Физика      |
+|        13 |        3 |    5 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        3 | Физика      |
+|        14 |        3 |    5 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        3 | Физика      |
+|        15 |        3 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        3 | Физика      |
+|        16 |        3 |    4 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        3 | Физика      |
+|        17 |        3 |    5 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        3 | Физика      |
+|        18 |        3 |    5 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        3 | Физика      |
+|        19 |        3 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        3 | Физика      |
+|        20 |        3 |    4 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        3 | Физика      |
+|        11 |        4 |    5 |        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |        4 | Химия       |
+|        12 |        4 |    3 |        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |        4 | Химия       |
+|        13 |        4 |    4 |        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |        4 | Химия       |
+|        14 |        4 |    3 |        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |        4 | Химия       |
+|        15 |        4 |    5 |        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |        4 | Химия       |
+|        16 |        4 |    3 |        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |        4 | Химия       |
+|        17 |        4 |    4 |        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |        4 | Химия       |
+|        18 |        4 |    3 |        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |        4 | Химия       |
+|        19 |        4 |    5 |        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |        4 | Химия       |
+|        20 |        4 |    3 |        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |        4 | Химия       |
++-----------+----------+------+-----------+--------------+------------+----------------+-------------+-------------+---------+----------+-------------+
+40 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark), AVG(SELECT M.Mark FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT M.Mark FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.G' at line 1
+mysql> SELECT M.Mark FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID;
++------+
+| Mark |
++------+
+|    5 |
+|    4 |
+|    5 |
+|    3 |
+|    5 |
+|    4 |
+|    5 |
+|    3 |
+|    5 |
+|    4 |
+|    5 |
+|    3 |
+|    4 |
+|    3 |
+|    5 |
+|    3 |
+|    4 |
+|    3 |
+|    5 |
+|    3 |
+|    5 |
+|    4 |
+|    5 |
+|    5 |
+|    5 |
+|    4 |
+|    5 |
+|    5 |
+|    5 |
+|    4 |
+|    5 |
+|    3 |
+|    4 |
+|    3 |
+|    5 |
+|    3 |
+|    4 |
+|    3 |
+|    5 |
+|    3 |
++------+
+40 rows in set (0.00 sec)
+
+mysql> AVG(SELECT M.Mark FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AVG(SELECT M.Mark FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND' at line 1
+mysql> SELECT AVG (M.Mark) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> SELECT AVG (M.Mark) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID;
++--------------+
+| AVG (M.Mark) |
++--------------+
+|       4.1500 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AVG (M.Mark) FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++--------------+
+| AVG (M.Mark) |
++--------------+
+|       4.3000 |
+|       3.8000 |
+|       4.7000 |
+|       3.8000 |
++--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Математика  |      3.9000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT C.CourseName, AVG(M.Mark) FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName, S.GroupNumber;
++-------------+-------------+
+| CourseName  | AVG(M.Mark) |
++-------------+-------------+
+| Информатика |      4.3000 |
+| Информатика |      4.3000 |
+| Математика  |      4.0000 |
+| Математика  |      3.8000 |
+| Физика      |      4.7000 |
+| Физика      |      4.7000 |
+| Химия       |      3.8000 |
+| Химия       |      3.8000 |
++-------------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT CourseName, AVG_101, AVG_102
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName)
+    -> JOIN
+    -> (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName); 
+ERROR 1248 (42000): Every derived table must have its own alias
+mysql> SELECT CourseName, AVG_101, AVG_102
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName)
+    -> JOIN
+    -> (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> ;FROM Marks M 
+ERROR 1248 (42000): Every derived table must have its own alias
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM Marks M' at line 1
+mysql> SELECT G1.CourseName, AVG_101, AVG_102
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G1
+    -> JOIN
+    -> (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G2; 
+ERROR 1054 (42S22): Unknown column 'AVG_101' in 'field list'
+mysql> SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName;
++-------------+---------+
+| CourseName  | AVG_102 |
++-------------+---------+
+| Информатика |  4.3000 |
+| Математика  |  3.8000 |
+| Физика      |  4.7000 |
+| Химия       |  3.8000 |
++-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT G1.CourseName, 'AVG_101', 'AVG_102'
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G1
+    -> JOIN
+    -> (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G2;  
++-------------+---------+---------+
+| CourseName  | AVG_101 | AVG_102 |
++-------------+---------+---------+
+| Информатика | AVG_101 | AVG_102 |
+| Математика  | AVG_101 | AVG_102 |
+| Физика      | AVG_101 | AVG_102 |
+| Химия       | AVG_101 | AVG_102 |
+| Информатика | AVG_101 | AVG_102 |
+| Математика  | AVG_101 | AVG_102 |
+| Физика      | AVG_101 | AVG_102 |
+| Химия       | AVG_101 | AVG_102 |
+| Информатика | AVG_101 | AVG_102 |
+| Математика  | AVG_101 | AVG_102 |
+| Физика      | AVG_101 | AVG_102 |
+| Химия       | AVG_101 | AVG_102 |
+| Информатика | AVG_101 | AVG_102 |
+| Математика  | AVG_101 | AVG_102 |
+| Физика      | AVG_101 | AVG_102 |
+| Химия       | AVG_101 | AVG_102 |
++-------------+---------+---------+
+16 rows in set (0.00 sec)
+
+mysql> SELECT G1.CourseName, G1.AVG_101, G2.AVG_102
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G1
+    -> JOIN
+    -> (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
+ERROR 1054 (42S22): Unknown column 'G1.AVG_101' in 'field list'
+mysql> SELECT G1.CourseName, G1.AVG_101, G2.AVG_102
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G1
+    -> JOIN
+    -> (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M 
+    -> JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
+ERROR 1054 (42S22): Unknown column 'G1.AVG_101' in 'field list'
+mysql> SELECT G1.CourseName, G1.AVG_101, G2.AVG_102 FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
+ERROR 1054 (42S22): Unknown column 'G1.AVG_101' in 'field list'
+mysql> SELECT * FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
++-------------+---------+-------------+---------+
+| CourseName  | AVG_102 | CourseName  | AVG_102 |
++-------------+---------+-------------+---------+
+| Информатика |  4.3000 | Информатика |  4.3000 |
+| Математика  |  3.8000 | Математика  |  3.8000 |
+| Физика      |  4.7000 | Физика      |  4.7000 |
+| Химия       |  3.8000 | Химия       |  3.8000 |
++-------------+---------+-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2;
++-------------+---------+-------------+---------+
+| CourseName  | AVG_102 | CourseName  | AVG_102 |
++-------------+---------+-------------+---------+
+| Информатика |  4.3000 | Информатика |  4.3000 |
+| Математика  |  3.8000 | Информатика |  4.3000 |
+| Физика      |  4.7000 | Информатика |  4.3000 |
+| Химия       |  3.8000 | Информатика |  4.3000 |
+| Информатика |  4.3000 | Математика  |  3.8000 |
+| Математика  |  3.8000 | Математика  |  3.8000 |
+| Физика      |  4.7000 | Математика  |  3.8000 |
+| Химия       |  3.8000 | Математика  |  3.8000 |
+| Информатика |  4.3000 | Физика      |  4.7000 |
+| Математика  |  3.8000 | Физика      |  4.7000 |
+| Физика      |  4.7000 | Физика      |  4.7000 |
+| Химия       |  3.8000 | Физика      |  4.7000 |
+| Информатика |  4.3000 | Химия       |  3.8000 |
+| Математика  |  3.8000 | Химия       |  3.8000 |
+| Физика      |  4.7000 | Химия       |  3.8000 |
+| Химия       |  3.8000 | Химия       |  3.8000 |
++-------------+---------+-------------+---------+
+16 rows in set (0.00 sec)
+
+mysql> SELECT * FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
++-------------+---------+-------------+---------+
+| CourseName  | AVG_102 | CourseName  | AVG_102 |
++-------------+---------+-------------+---------+
+| Информатика |  4.3000 | Информатика |  4.3000 |
+| Математика  |  3.8000 | Математика  |  3.8000 |
+| Физика      |  4.7000 | Физика      |  4.7000 |
+| Химия       |  3.8000 | Химия       |  3.8000 |
++-------------+---------+-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT G1.CourseName, AVG_101, AVG_102 FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_101 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
++-------------+---------+---------+
+| CourseName  | AVG_101 | AVG_102 |
++-------------+---------+---------+
+| Информатика |  4.3000 |  4.3000 |
+| Математика  |  4.0000 |  3.8000 |
+| Физика      |  4.7000 |  4.7000 |
+| Химия       |  3.8000 |  3.8000 |
++-------------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT CourseName, AVG_total, AVG_101, AVG_102 FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_total FROM Marks M JOIN Students S ON M.StudentID = S.StudentID JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS T JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;(SELECT C.CourseName, AVG(M.Mark) AS AVG_101 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 ON G1.CourseName = G2.CourseName;
+ERROR 1052 (23000): Column 'CourseName' in field list is ambiguous
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AS G1 JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 FROM Marks M JOIN Studen' at line 1
+mysql> SELECT CourseName, AVG_total, AVG_101, AVG_102 
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_total 
+    -> FROM Marks M 
+    -> JOIN Students S ON M.StudentID = S.StudentID 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS T 
+    -> JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_101 
+    -> FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G1 
+    -> ON T.CourseName = G1.CourseName
+    -> JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 
+    -> ON G1.CourseName = G2.CourseName; 
+ERROR 1052 (23000): Column 'CourseName' in field list is ambiguous
+mysql> SELECT T.CourseName, AVG_total, AVG_101, AVG_102 
+    -> FROM (SELECT C.CourseName, AVG(M.Mark) AS AVG_total 
+    -> FROM Marks M 
+    -> JOIN Students S ON M.StudentID = S.StudentID 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS T 
+    -> JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_101 
+    -> FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 101) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID 
+    -> GROUP BY C.CourseName) AS G1 
+    -> ON T.CourseName = G1.CourseName
+    -> JOIN (SELECT C.CourseName, AVG(M.Mark) AS AVG_102 
+    -> FROM Marks M JOIN Students S ON (M.StudentID = S.StudentID AND S.GroupNumber = 102) 
+    -> JOIN Courses C ON M.CourseID = C.CourseID GROUP BY C.CourseName) AS G2 
+    -> ON G1.CourseName = G2.CourseName;
++-------------+-----------+---------+---------+
+| CourseName  | AVG_total | AVG_101 | AVG_102 |
++-------------+-----------+---------+---------+
+| Информатика |    4.3000 |  4.3000 |  4.3000 |
+| Математика  |    3.9000 |  4.0000 |  3.8000 |
+| Физика      |    4.7000 |  4.7000 |  4.7000 |
+| Химия       |    3.8000 |  3.8000 |  3.8000 |
++-------------+-----------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Students;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |
+|         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |
+|         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |
+|         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |
+|         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |
+|         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |
+|         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |
+|         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |
+|         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |
+|        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+20 rows in set (0.00 sec)
+
+mysql> DELETE FROM Students WHERE Lastname = 'Алексеев' AND Firstname = 'Алексей' AND Middlename = 'Алексеевич' AND GroupNumber = 101;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM Students;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |
+|         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |
+|         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |
+|         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |
+|         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |
+|         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |
+|         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |
+|         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |
+|        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+19 rows in set (0.00 sec)
+
+mysql> INSERT INTO INSERT INTO Students VALUES 
+    -> (1, 'Алексеев', 'Алексей', 'Алексеевич', 101, '9010000000', 'Да');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSERT INTO Students VALUES 
+(1, 'Алексеев', 'Алексей', 'Алек' at line 1
+mysql> INSERT INTO Students VALUES (1, 'Алексеев', 'Алексей', 'Алексеевич', 101, '9010000000', 'Да');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM Students;
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+| StudentID | LastName     | FirstName  | MiddleName     | GroupNumber | PhoneNumber | Stipend |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+|         1 | Алексеев     | Алексей    | Алексеевич     |         101 | 9010000000  | Да      |
+|         2 | Андреев      | Андрей     | Андреевич      |         101 | 9020000000  | Нет     |
+|         3 | Антонов      | Антон      | Антонович      |         101 | 9030000000  | Да      |
+|         4 | Артемов      | Артем      | Артемович      |         101 | 9040000000  | Нет     |
+|         5 | Александров  | Александр  | Александрович  |         101 | 9050000000  | Да      |
+|         6 | Альбертов    | Альберт    | Альбертович    |         101 | 9060000000  | Нет     |
+|         7 | Вадимов      | Вадим      | Вадимович      |         101 | 9070000000  | Да      |
+|         8 | Владимиров   | Владимир   | Владимирович   |         101 | 9080000000  | Нет     |
+|         9 | Викторов     | Виктор     | Викторович     |         101 | 9090000000  | Да      |
+|        10 | Вавилов      | Вавил      | Вавилович      |         101 | 9100000000  | Нет     |
+|        11 | Игорев       | Игорь      | Игоревич       |         102 | 9110000000  | Да      |
+|        12 | Иванов       | Иван       | Иванович       |         102 | 9120000000  | Нет     |
+|        13 | Ильин        | Илья       | Ильич          |         102 | 9130000000  | Да      |
+|        14 | Искандеров   | Искандер   | Искандерович   |         102 | 9140000000  | Нет     |
+|        15 | Кириллов     | Кирилл     | Кириллович     |         102 | 9150000000  | Да      |
+|        16 | Константинов | Константин | Константинович |         102 | 9160000000  | Нет     |
+|        17 | Максимов     | Максим     | Максимович     |         102 | 9170000000  | Да      |
+|        18 | Михайлов     | Михаил     | Михайлович     |         102 | 9180000000  | Нет     |
+|        19 | Георгиев     | Георгий    | Георгиевич     |         102 | 9190000000  | Да      |
+|        20 | Григорьев    | Григорий   | Григорьевич    |         102 | 9200000000  | Нет     |
++-----------+--------------+------------+----------------+-------------+-------------+---------+
+20 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Lecturers;
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+| LecturerID | LastName    | FirstName | MiddleName    | BirthDate  | Position  | PhoneNumber | ServiceLength | CourseID |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+|          1 | Петров      | Петр      | Петрович      | 1986-05-12 | Ассистент | 9011111111  |             4 |        1 |
+|          2 | Павлов      | Павел     | Павлович      | 1959-04-02 | Доцент    | 9021111111  |            30 |        1 |
+|          3 | Сидоров     | Сидор     | Сидорович     | 1972-01-23 | Профессор | 9031111111  |            22 |        2 |
+|          4 | Сергеев     | Сергей    | Сергеевич     | 1983-04-01 | Доцент    | 9041111111  |            12 |        2 |
+|          5 | Русланов    | Руслан    | Русланович    | 1971-11-08 | Профессор | 9051111111  |             4 |        3 |
+|          6 | Ростиславов | Ростислав | Ростиславович | 1991-02-17 | Ассистент | 9061111111  |             5 |        3 |
+|          7 | Тимофеев    | Тимофей   | Тимофеевич    | 1981-04-03 | Доцент    | 9071111111  |             9 |        4 |
+|          8 | Тамерланов  | Тамерлан  | Тамерланович  | 1956-09-10 | Профессор | 9081111111  |            35 |        4 |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE Lecturers SET ServiceLength = ServiceLength + 1 WHERE ServiceLength < 10;
+Query OK, 4 rows affected (0.00 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> SELECT * FROM Lecturers;
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+| LecturerID | LastName    | FirstName | MiddleName    | BirthDate  | Position  | PhoneNumber | ServiceLength | CourseID |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+|          1 | Петров      | Петр      | Петрович      | 1986-05-12 | Ассистент | 9011111111  |             5 |        1 |
+|          2 | Павлов      | Павел     | Павлович      | 1959-04-02 | Доцент    | 9021111111  |            30 |        1 |
+|          3 | Сидоров     | Сидор     | Сидорович     | 1972-01-23 | Профессор | 9031111111  |            22 |        2 |
+|          4 | Сергеев     | Сергей    | Сергеевич     | 1983-04-01 | Доцент    | 9041111111  |            12 |        2 |
+|          5 | Русланов    | Руслан    | Русланович    | 1971-11-08 | Профессор | 9051111111  |             5 |        3 |
+|          6 | Ростиславов | Ростислав | Ростиславович | 1991-02-17 | Ассистент | 9061111111  |             6 |        3 |
+|          7 | Тимофеев    | Тимофей   | Тимофеевич    | 1981-04-03 | Доцент    | 9071111111  |            10 |        4 |
+|          8 | Тамерланов  | Тамерлан  | Тамерланович  | 1956-09-10 | Профессор | 9081111111  |            35 |        4 |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE Lecturers SET ServiceLength = ServiceLength - 1 WHERE ServiceLength =< 10;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=< 10' at line 1
+mysql> UPDATE Lecturers SET ServiceLength = ServiceLength - 1 WHERE ServiceLength <= 10;
+Query OK, 4 rows affected (0.00 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> SELECT * FROM Lecturers;
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+| LecturerID | LastName    | FirstName | MiddleName    | BirthDate  | Position  | PhoneNumber | ServiceLength | CourseID |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+|          1 | Петров      | Петр      | Петрович      | 1986-05-12 | Ассистент | 9011111111  |             4 |        1 |
+|          2 | Павлов      | Павел     | Павлович      | 1959-04-02 | Доцент    | 9021111111  |            30 |        1 |
+|          3 | Сидоров     | Сидор     | Сидорович     | 1972-01-23 | Профессор | 9031111111  |            22 |        2 |
+|          4 | Сергеев     | Сергей    | Сергеевич     | 1983-04-01 | Доцент    | 9041111111  |            12 |        2 |
+|          5 | Русланов    | Руслан    | Русланович    | 1971-11-08 | Профессор | 9051111111  |             4 |        3 |
+|          6 | Ростиславов | Ростислав | Ростиславович | 1991-02-17 | Ассистент | 9061111111  |             5 |        3 |
+|          7 | Тимофеев    | Тимофей   | Тимофеевич    | 1981-04-03 | Доцент    | 9071111111  |             9 |        4 |
+|          8 | Тамерланов  | Тамерлан  | Тамерланович  | 1956-09-10 | Профессор | 9081111111  |            35 |        4 |
++------------+-------------+-----------+---------------+------------+-----------+-------------+---------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT S.LastName, S.FirstName, S.MiddleName, S.GroupNumber
+    -> FROM Students S
+    -> JOIN Marks M ON M.StudentID = S.StudentID
+    -> GROUP BY M.StudentID 
+    -> HAVING SUM(M.Mark) = 20;
++-------------+-----------+---------------+-------------+
+| LastName    | FirstName | MiddleName    | GroupNumber |
++-------------+-----------+---------------+-------------+
+| Александров | Александр | Александрович |         101 |
+| Викторов    | Виктор    | Викторович    |         101 |
+| Игорев      | Игорь     | Игоревич      |         102 |
+| Кириллов    | Кирилл    | Кириллович    |         102 |
+| Георгиев    | Георгий   | Георгиевич    |         102 |
++-------------+-----------+---------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Marks VALUES
+    -> (1, 1, 5), (1, 2, 5), (1, 3, 5), (1, 4, 5);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Top_Students AS SELECT S.LastName, S.FirstName, S.MiddleName, S.GroupNumber
+    -> FROM Students S
+    -> JOIN Marks M ON M.StudentID = S.StudentID
+    -> GROUP BY M.StudentID 
+    -> HAVING SUM(M.Mark) = 20;
+Query OK, 6 rows affected (0.02 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SHOW TABLEs;
++---------------------+
+| Tables_in_dekanatxx |
++---------------------+
+| courses             |
+| lecturers           |
+| marks               |
+| students            |
+| top_students        |
++---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM top_students;
++-------------+-----------+---------------+-------------+
+| LastName    | FirstName | MiddleName    | GroupNumber |
++-------------+-----------+---------------+-------------+
+| Алексеев    | Алексей   | Алексеевич    |         101 |
+| Александров | Александр | Александрович |         101 |
+| Викторов    | Виктор    | Викторович    |         101 |
+| Игорев      | Игорь     | Игоревич      |         102 |
+| Кириллов    | Кирилл    | Кириллович    |         102 |
+| Георгиев    | Георгий   | Георгиевич    |         102 |
++-------------+-----------+---------------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> \t
