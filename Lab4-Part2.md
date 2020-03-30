@@ -45,25 +45,47 @@
 
 + Создайте новую таблицу Lecturers, которая будет содержать данные преподавателей. Определите следующие названия полей и их типы данных:
 
-		+-------------+-------------+------+-----+---------+----------------+
-		| Field       | Type        | Null | Key | Default | Extra          |
-		+-------------+-------------+------+-----+---------+----------------+
-		| LecturerID  | int(11)     | NO   | PRI | NULL    | auto_increment |
-		| LastName    | varchar(15) | NO   |     | NULL    |                |
-		| FirstName   | varchar(15) | NO   |     | NULL    |                |
-		| MiddleName  | varchar(15) | YES  |     | NULL    |                |
-		| BirthDate   | date        | YES  |     | NULL    |                |
-		| Position    | varchar(9)  | NO   |     | NULL    |                |
-		| PhoneNumber | char(10)    | YES  |     | NULL    |                |
-		| CourseID    | int(11)     | NO   |     | NULL    |                |
-		+-------------+-------------+------+-----+---------+----------------+
-
-
+		+---------------+-------------+------+-----+---------+----------------+
+		| Field         | Type        | Null | Key | Default | Extra          |
+		+---------------+-------------+------+-----+---------+----------------+
+		| LecturerID    | int(11)     | NO   | PRI | NULL    | auto_increment |
+		| LastName      | varchar(15) | NO   |     | NULL    |                |
+		| FirstName     | varchar(15) | NO   |     | NULL    |                |
+		| MiddleName    | varchar(15) | YES  |     | NULL    |                |
+		| BirthDate     | date        | YES  |     | NULL    |                |
+		| Position      | varchar(9)  | NO   |     | NULL    |                |
+		| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
+		| ServiceLength | int(11)     | YES  |     | NULL    |                |
+		| CourseID      | int(11)     | YES  | MUL | NULL    |                |
+		+---------------+-------------+------+-----+---------+----------------+
+		
   Вместо того, чтобы написать новую команду для создания таблицы Lecturers, вы можете использовать команду для создания таблицы Lecturers из первой части четвертого практического задания. В этом случае ваша таблица будет иметь поле Course (Дисциплина), который можно удалить, а вместо него добавить новое поле CourseID (КодДисциплины), используя оператор ALTER:
   
   		mysql> ALTER TABLE Lecturers DROP COLUMN Course; 		-- удалить столбец (поле) Course из таблицы Lecturers
 		mysql> ALTER TABLE Lecturers ADD CourseID INTEGER NOT NULL;	-- столбец (поле) CourseID в таблицу Lecturers
-
+  
+  Если вы захотите поменять местами некоторые столбцы, то можете воспользоваться следующей командой
+  
+		mysql> ALTER TABLE Lecturers MODIFY CourseID INTEGER AFTER Position;
+		Query OK, 0 rows affected (0.07 sec)
+		Records: 0  Duplicates: 0  Warnings: 0
+		
+		mysql> DESC lecturers;
+		+---------------+-------------+------+-----+---------+----------------+
+		| Field         | Type        | Null | Key | Default | Extra          |
+		+---------------+-------------+------+-----+---------+----------------+
+		| LecturerID    | int(11)     | NO   | PRI | NULL    | auto_increment |
+		| LastName      | varchar(15) | NO   |     | NULL    |                |
+		| FirstName     | varchar(15) | NO   |     | NULL    |                |
+		| MiddleName    | varchar(15) | YES  |     | NULL    |                |
+		| BirthDate     | date        | YES  |     | NULL    |                |
+		| Position      | varchar(9)  | NO   |     | NULL    |                |
+		| CourseID      | int(11)     | YES  | MUL | NULL    |                |
+		| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
+		| ServiceLength | int(11)     | YES  |     | NULL    |                |
+		+---------------+-------------+------+-----+---------+----------------+
+		9 rows in set (0.00 sec)
+  
 + Создайте новую таблицу Marks, которая будет содержать оценки. Определите следующие названия полей и их типы данных:
 
 		+-----------+---------+------+-----+---------+-------+
