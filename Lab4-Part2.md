@@ -58,7 +58,7 @@
 		| Position      | varchar(9)  | NO   |     | NULL    |                |
 		| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
 		| ServiceLength | int(11)     | YES  |     | NULL    |                |
-		| CourseID      | int(11)     | YES  | MUL | NULL    |                |
+		| CourseID      | int(11)     | YES  |     | NULL    |                |
 		+---------------+-------------+------+-----+---------+----------------+
 		
   Вместо того, чтобы написать новую команду для создания таблицы Lecturers, вы можете использовать команду для создания таблицы Lecturers из первой части четвертого практического задания. В этом случае ваша таблица будет иметь поле Course (Дисциплина), который можно удалить, а вместо него добавить новое поле CourseID (КодДисциплины), используя оператор ALTER:
@@ -82,7 +82,7 @@
 		| MiddleName    | varchar(15) | YES  |     | NULL    |                |
 		| BirthDate     | date        | YES  |     | NULL    |                |
 		| Position      | varchar(9)  | NO   |     | NULL    |                |
-		| CourseID      | int(11)     | YES  | MUL | NULL    |                |
+		| CourseID      | int(11)     | YES  |     | NULL    |                |
 		| PhoneNumber   | char(10)    | YES  |     | NULL    |                |
 		| ServiceLength | int(11)     | YES  |     | NULL    |                |
 		+---------------+-------------+------+-----+---------+----------------+
